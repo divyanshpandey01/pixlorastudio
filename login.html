@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function() {
+      const storedTheme = localStorage.getItem('pixlora-theme');
+      if (storedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+      } else if (storedTheme === 'dark') {
+        document.documentElement.classList.remove('light-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.classList.add('light-theme');
+      }
+    })();
+  </script>
   <title>Pixlora Studio — Authorisation Portal</title>
   <meta name="description" content="Access your Pixlora Studio account. Managed galleries, AI face search, and event deliveries.">
   
@@ -299,18 +311,131 @@
       font-size: 0.8rem;
       color: var(--gray-300);
     }
+
+    /* ═══════════ DARK/LIGHT THEME TRANSITIONS & OVERRIDES ═══════════ */
+    body, body *, div, a, button, input {
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Theme Switcher Button Style */
+    .theme-toggle {
+      background: none; border: none; cursor: pointer; color: var(--gray-200);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.02);
+    }
+    .theme-toggle:hover {
+      color: var(--gold); border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.05);
+      transform: scale(1.05);
+    }
+    .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Show/hide sun/moon based on theme */
+    .sun-icon { display: none; }
+    .moon-icon { display: block; }
+    .light-theme .sun-icon { display: block; }
+    .light-theme .moon-icon { display: none; }
+
+    /* Light Theme Variables */
+    body.light-theme {
+      --navy: #FFFFFF;
+      --navy-light: #F3F4F6;
+      --navy-dark: #EBF0F5;
+      --white: #111A23;
+      --off-white: #111827;
+      --gray-200: #374151;
+      --gray-300: #4B5563;
+      --bg: var(--navy);
+    }
+
+    /* Light Theme Specific Element Overrides */
+    body.light-theme .theme-toggle {
+      border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.02); color: #4B5563;
+    }
+    body.light-theme .theme-toggle:hover {
+      color: var(--gold); border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.03);
+    }
+    body.light-theme .bg-overlay {
+      opacity: 0.08;
+    }
+    body.light-theme .bg-gradient {
+      background: radial-gradient(circle at center, transparent 30%, #EBF0F5 100%);
+    }
+    body.light-theme .auth-card {
+      background: rgba(243, 244, 246, 0.8);
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 0 40px rgba(212, 175, 55, 0.02);
+    }
+    body.light-theme .logo-title {
+      color: #111A23;
+    }
+    body.light-theme .view-title {
+      color: #111A23;
+    }
+    body.light-theme .form-group input {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #111827;
+    }
+    body.light-theme .form-group input::placeholder {
+      color: #6B7280;
+    }
+    body.light-theme .form-group input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.08);
+    }
+    body.light-theme .forgot-link, 
+    body.light-theme .toggle-view-btn {
+      color: #4B5563;
+    }
+    body.light-theme .btn-social {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #1F2937;
+    }
+    body.light-theme .btn-social:hover {
+      background: rgba(0, 0, 0, 0.06);
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+    body.light-theme .divider {
+      color: #6B7280;
+    }
+    body.light-theme .divider::before,
+    body.light-theme .divider::after {
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #991B1B;
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    body.light-theme .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #065F46;
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+    body.light-theme .footer-note {
+      color: #4B5563;
+    }
   </style>
 </head>
 <body>
+  <script>(function(){ if(document.documentElement.classList.contains('light-theme')) document.body.classList.add('light-theme'); })();</script>
 
   <div class="bg-overlay"></div>
   <div class="bg-gradient"></div>
 
   <div class="container">
-    <a href="index.html" class="back-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      Back to Website
-    </a>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+      <a href="index.html" class="back-btn" style="margin-bottom: 0;" onclick="if(document.referrer) { window.history.back(); return false; }">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Website
+      </a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
 
     <div class="auth-card">
       <div class="logo-area">
@@ -561,6 +686,15 @@
       document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
       document.getElementById('view-' + view).classList.add('active');
     };
+
+    // Theme Toggle Handler
+    const toggleBtn = document.getElementById('theme-toggle');
+    const toggleTheme = () => {
+      const isLight = document.body.classList.toggle('light-theme');
+      document.documentElement.classList.toggle('light-theme', isLight);
+      localStorage.setItem('pixlora-theme', isLight ? 'light' : 'dark');
+    };
+    if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
   </script>
 </body>
 </html>

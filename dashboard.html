@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function() {
+      const storedTheme = localStorage.getItem('pixlora-theme');
+      if (storedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+      } else if (storedTheme === 'dark') {
+        document.documentElement.classList.remove('light-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.classList.add('light-theme');
+      }
+    })();
+  </script>
   <title>Photographer Dashboard | Pixlora Studio</title>
   <meta name="description" content="Manage your Pixlora Studio events, upload photos, generate guest QRs, and track gallery views and downloads.">
 
@@ -503,9 +515,356 @@
       .topbar-actions .btn-quick-create span { display: none; }
       .topbar-actions .btn-quick-create { padding: 0.55rem; }
     }
+
+    /* ═══════════ DARK/LIGHT THEME TRANSITIONS & OVERRIDES ═══════════ */
+    body, body *, aside, main, header, div, a, button, input, select, textarea, table, th, td {
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Theme Switcher Button Style */
+    .theme-toggle {
+      background: none; border: none; cursor: pointer; color: var(--gray-200);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%; transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.02);
+    }
+    .theme-toggle:hover {
+      color: var(--gold); border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.05);
+      transform: scale(1.05);
+    }
+    .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Back Button Style */
+    .nav-back-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%; color: var(--gray-200);
+      border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.02);
+      transition: all 0.3s;
+    }
+    .nav-back-btn:hover {
+      color: var(--gold); border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.05);
+      transform: translateX(-4px);
+    }
+    .nav-back-btn svg { width: 18px; height: 18px; }
+
+    /* Show/hide sun/moon based on theme */
+    .sun-icon { display: none; }
+    .moon-icon { display: block; }
+    .light-theme .sun-icon { display: block; }
+    .light-theme .moon-icon { display: none; }
+
+    /* Light Theme Variables */
+    body.light-theme {
+      --navy: #FFFFFF;
+      --navy-light: #F3F4F6;
+      --navy-dark: #EBF0F5;
+      --white: #111A23;
+      --off-white: #111827;
+      --gray-100: #1F2937;
+      --gray-200: #374151;
+      --gray-300: #4B5563;
+      --bg: var(--navy-dark);
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-glass: rgba(255, 255, 255, 0.8);
+      --text: var(--off-white);
+      --text-muted: var(--gray-200);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.04);
+      --shadow-md: 0 8px 30px rgba(0,0,0,.06);
+      --shadow-lg: 0 16px 60px rgba(0,0,0,.08);
+      --shadow-glow: 0 0 35px rgba(212,175,55,.04);
+    }
+
+    /* Light Theme Specific Element Overrides */
+    body.light-theme .theme-toggle,
+    body.light-theme .nav-back-btn {
+      border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.02); color: #4B5563;
+    }
+    body.light-theme .theme-toggle:hover,
+    body.light-theme .nav-back-btn:hover {
+      color: var(--gold); border-color: rgba(212,175,55,.3); background: rgba(212,175,55,.03);
+    }
+    body.light-theme .sidebar {
+      background: #FFFFFF;
+      border-right-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .sidebar-header {
+      border-bottom-color: rgba(0, 0, 0, 0.06);
+    }
+    body.light-theme .sidebar-brand {
+      color: #111A23;
+    }
+    body.light-theme .menu-item {
+      color: #4B5563;
+    }
+    body.light-theme .menu-item:hover {
+      color: #111A23;
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.04);
+    }
+    body.light-theme .menu-item.active {
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.2);
+    }
+    body.light-theme .sidebar-footer {
+      border-top-color: rgba(0, 0, 0, 0.06);
+    }
+    body.light-theme .photographer-avatar {
+      background: #F3F4F6;
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    body.light-theme .photographer-name {
+      color: #111A23;
+    }
+    body.light-theme .photographer-studio {
+      color: #4B5563;
+    }
+    body.light-theme .btn-signout {
+      color: #4B5563;
+    }
+    body.light-theme .btn-signout:hover {
+      color: #EF4444;
+    }
+    body.light-theme .topbar {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .view-title-header {
+      color: #111A23;
+    }
+    body.light-theme .notification-bell {
+      background: rgba(0, 0, 0, 0.02);
+      color: #4B5563;
+    }
+    body.light-theme .notification-bell:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #111A23;
+    }
+    body.light-theme ::-webkit-scrollbar-track {
+      background: #EBF0F5;
+    }
+    body.light-theme ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+    }
+    body.light-theme ::-webkit-scrollbar-thumb:hover {
+      background: var(--gold-dark);
+    }
+    
+    /* Panel Overrides */
+    body.light-theme .stat-card {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    body.light-theme .stat-icon {
+      background: rgba(212,175,55,.1);
+    }
+    body.light-theme .stat-num {
+      color: #111A23;
+    }
+    body.light-theme .stat-label {
+      color: #4B5563;
+    }
+    body.light-theme .stat-change {
+      color: #059669;
+    }
+    body.light-theme .stat-change.down {
+      color: #DC2626;
+    }
+    body.light-theme .dashboard-grid-2 > div {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    body.light-theme .panel-card-title {
+      color: #111A23;
+    }
+    body.light-theme .storage-gauge-bg {
+      background: #E5E7EB;
+    }
+    body.light-theme .storage-label,
+    body.light-theme .storage-usage {
+      color: #4B5563;
+    }
+    body.light-theme th {
+      background: #F9FAFB !important;
+      color: #111A23 !important;
+      border-bottom: 2px solid rgba(0,0,0,0.08) !important;
+    }
+    body.light-theme td {
+      border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+      color: #374151 !important;
+    }
+    body.light-theme tr:hover td {
+      background: rgba(0, 0, 0, 0.01) !important;
+    }
+    body.light-theme .status-badge {
+      background: rgba(0, 0, 0, 0.05);
+      color: #374151;
+    }
+    body.light-theme .status-badge.active {
+      background: rgba(52, 211, 153, 0.15);
+      color: #047857;
+    }
+    body.light-theme .status-badge.draft {
+      background: rgba(251, 191, 36, 0.15);
+      color: #B45309;
+    }
+    body.light-theme .btn-action-icon {
+      background: rgba(0,0,0,0.02);
+      color: #4B5563;
+    }
+    body.light-theme .btn-action-icon:hover {
+      background: rgba(0,0,0,0.05);
+      color: #111A23;
+    }
+    
+    /* Form inputs inside panels */
+    body.light-theme .form-card {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    body.light-theme .form-section-title {
+      color: #111A23;
+      border-bottom-color: rgba(0, 0, 0, 0.06);
+    }
+    body.light-theme .form-group label {
+      color: #374151;
+    }
+    body.light-theme .form-group input,
+    body.light-theme .form-group select,
+    body.light-theme .form-group textarea {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: #111827;
+    }
+    body.light-theme .form-group input::placeholder,
+    body.light-theme .form-group textarea::placeholder {
+      color: #6B7280;
+    }
+    body.light-theme .form-group input:focus,
+    body.light-theme .form-group select:focus,
+    body.light-theme .form-group textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.08);
+    }
+    body.light-theme .checkbox-pill {
+      background: #F3F4F6;
+      border-color: rgba(0,0,0,0.08);
+      color: #4B5563;
+    }
+    body.light-theme .checkbox-pill:hover {
+      background: #E5E7EB;
+      color: #111A23;
+    }
+    body.light-theme .checkbox-input:checked + .checkbox-pill {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+      color: var(--gold-dark);
+    }
+    
+    /* Drag & Drop Area */
+    body.light-theme .upload-area {
+      background: #F9FAFB;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+    body.light-theme .upload-area:hover,
+    body.light-theme .upload-area.dragover {
+      background: rgba(212,175,55,0.02);
+      border-color: var(--gold);
+    }
+    body.light-theme .upload-icon {
+      color: #4B5563;
+    }
+    body.light-theme .upload-hint {
+      color: #6B7280;
+    }
+    body.light-theme .uploaded-file-item {
+      background: #F3F4F6;
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+    body.light-theme .file-name {
+      color: #111827;
+    }
+    body.light-theme .file-meta {
+      color: #4B5563;
+    }
+    body.light-theme .progress-bar-bg {
+      background: #E5E7EB;
+    }
+    
+    /* QR code card */
+    body.light-theme .qr-preview-card {
+      background: #FFFFFF;
+      border-color: rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    }
+    body.light-theme .poster-header {
+      background: #F9FAFB;
+      border-bottom-color: rgba(0, 0, 0, 0.05);
+    }
+    body.light-theme .poster-body {
+      background: #FFFFFF;
+    }
+    body.light-theme .poster-title {
+      color: #111A23;
+    }
+    body.light-theme .poster-studio {
+      color: #4B5563;
+    }
+    body.light-theme .poster-badge {
+      background: rgba(0, 0, 0, 0.03);
+      color: #374151;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .poster-instructions {
+      color: #4B5563;
+    }
+    body.light-theme .poster-footer {
+      background: #F9FAFB;
+      border-top-color: rgba(0, 0, 0, 0.05);
+      color: #4B5563;
+    }
+    
+    /* Charts & Statistics */
+    body.light-theme .metrics-grid > div {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    body.light-theme svg text {
+      fill: #374151 !important;
+    }
+    body.light-theme svg line {
+      stroke: rgba(0, 0, 0, 0.08) !important;
+    }
+    body.light-theme svg path.grid-line {
+      stroke: rgba(0, 0, 0, 0.08) !important;
+    }
+    body.light-theme .analytics-legend-label {
+      color: #4B5563;
+    }
+    body.light-theme .analytics-legend-val {
+      color: #111A23;
+    }
+    
+    /* Downloads page */
+    body.light-theme .log-item {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .log-user {
+      color: #111A23;
+    }
+    body.light-theme .log-time,
+    body.light-theme .log-file {
+      color: #4B5563;
+    }
   </style>
 </head>
 <body>
+  <script>(function(){ if(document.documentElement.classList.contains('light-theme')) document.body.classList.add('light-theme'); })();</script>
 
   <!-- Background decorators -->
   <div class="dashboard-bg-glow">
@@ -584,10 +943,17 @@
         <button class="menu-trigger" onclick="toggleMobileSidebar()" aria-label="Open Sidebar Menu">
           <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
         </button>
+        <a href="index.html" class="nav-back-btn" aria-label="Go back to home" onclick="if(document.referrer) { window.history.back(); return false; }">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        </a>
         <h1 class="view-title-header" id="currentViewHeader">Dashboard Overview</h1>
       </div>
       
       <div class="topbar-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
         <button class="btn-quick-create" onclick="triggerQuickCreate()">
           <svg viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
           <span>New Event</span>
@@ -1715,6 +2081,17 @@
         }, 1200);
       }
     }
+
+    // Theme Toggle Handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('theme-toggle');
+      const toggleTheme = () => {
+        const isLight = document.body.classList.toggle('light-theme');
+        document.documentElement.classList.toggle('light-theme', isLight);
+        localStorage.setItem('pixlora-theme', isLight ? 'light' : 'dark');
+      };
+      if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
+    });
   </script>
 </body>
 </html>

@@ -279,5 +279,39 @@ import { db, isConfigured } from "./firebase-config.js";
           btn.style.opacity = '';
         }
       });
+      // ─── THEME TOGGLE ───
+      const toggleBtn = document.getElementById('theme-toggle');
+      const toggleBtnMobile = document.getElementById('theme-toggle-mobile');
+      const toggleTheme = () => {
+        const isLight = document.body.classList.toggle('light-theme');
+        document.documentElement.classList.toggle('light-theme', isLight);
+        localStorage.setItem('pixlora-theme', isLight ? 'light' : 'dark');
+      };
+      if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
+      if (toggleBtnMobile) toggleBtnMobile.addEventListener('click', toggleTheme);
+
+      // ─── SCROLL SPY ACTIVE LINKS ───
+      const sections = document.querySelectorAll('section[id], header[id]');
+      const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+      const scrollSpy = () => {
+        const scrollY = window.scrollY;
+        sections.forEach(current => {
+          const sectionHeight = current.offsetHeight;
+          const sectionTop = current.offsetTop - (navbar.offsetHeight + 120);
+          const sectionId = current.getAttribute('id');
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+      };
+      window.addEventListener('scroll', scrollSpy, { passive: true });
+      scrollSpy();
 
     });
