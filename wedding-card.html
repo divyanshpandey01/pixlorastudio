@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const storedTheme = localStorage.getItem('pixlora-theme');
+      if (storedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+      } else if (storedTheme === 'dark') {
+        document.documentElement.classList.remove('light-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.classList.add('light-theme');
+      }
+      document.documentElement.classList.add('js-enabled');
+    })();
+  </script>
+  <title>Invitation to Celebrate Our Wedding | Powered by Pixlora Studio</title>
+  <meta name="description" content="You are cordially invited to celebrate our wedding. View event timeline, RSVP, leave wishes, and view photo galleries." />
+
+  <!-- Favicon: Golden camera shutter + P on navy -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A2530'/><circle cx='16' cy='16' r='11' stroke='%23D4AF37' stroke-width='2' fill='none'/><circle cx='16' cy='16' r='7' stroke='%23D4AF37' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='3' fill='%23D4AF37'/><line x1='16' y1='3' x2='16' y2='6' stroke='%23D4AF37' stroke-width='1.5'/><line x1='16' y1='26' x2='16' y2='29' stroke='%23D4AF37' stroke-width='1.5'/><line x1='3' y1='16' x2='6' y2='16' stroke='%23D4AF37' stroke-width='1.5'/><line x1='26' y1='16' x2='29' y2='16' stroke='%23D4AF37' stroke-width='1.5'/><text x='16' y='18' text-anchor='middle' fill='%23D4AF37' font-family='serif' font-size='8' font-weight='bold'>P</text></svg>" type="image/svg+xml" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════ VARIABLES & RESET ═══════════ */
+    :root {
+      --navy: #1A2530;
+      --navy-light: #243345;
+      --navy-dark: #111a23;
+      --gold: #D4AF37;
+      --gold-light: #E8CC6E;
+      --gold-dark: #B8941F;
+      --gold-muted: rgba(212,175,55,.15);
+      --white: #FFFFFF;
+      --off-white: #F5F3EF;
+      --gray-100: #E8E6E1;
+      --gray-200: #C9C5BD;
+      --gray-300: #9E9A92;
+      --bg: var(--navy);
+      --bg-card: rgba(36,51,69,.45);
+      --bg-glass: rgba(36,51,69,.35);
+      --text: var(--off-white);
+      --text-muted: var(--gray-200);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.75rem;
+      --space-xl: 4.5rem;
+      --radius-sm: .5rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.5rem;
+      --shadow-md: 0 8px 30px rgba(0,0,0,.25);
+      --shadow-lg: 0 16px 60px rgba(0,0,0,.35);
+      --shadow-glow: 0 0 40px rgba(212,175,55,.15);
+      --ease-out: cubic-bezier(.25,.46,.45,.94);
+      --container: 900px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--navy-dark);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; font-family: inherit; background: none; }
+
+    /* Background ambient glow */
+    .bg-glow {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .bg-glow .orb {
+      position: absolute; border-radius: 50%; filter: blur(130px); opacity: .05;
+    }
+    .bg-glow .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--gold), transparent 70%); top: -100px; left: -100px; }
+    .bg-glow .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, var(--gold-light), transparent 70%); bottom: 10%; right: -150px; }
+
+    /* Floating particles background */
+    .particles-bg { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    .particle {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); opacity: 0.12; animation: floatDrift 20s infinite ease-in-out;
+    }
+    @keyframes floatDrift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(50px, -80px); }
+    }
+
+    /* Layout utilities */
+    .container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 var(--space-md); position: relative; z-index: 10; }
+    .section-pad { padding: var(--space-xl) 0; }
+    .gold-text { color: var(--gold); }
+    .text-center { text-align: center; }
+
+    .gold-separator {
+      display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 1.5rem 0;
+    }
+    .gold-separator span { width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+    .gold-separator span:last-child { background: linear-gradient(90deg, var(--gold), transparent); }
+    .gold-separator svg { width: 18px; height: 18px; color: var(--gold); fill: currentColor; }
+
+    .section-badge {
+      display: inline-flex; align-items: center; gap: .5rem; padding: .4rem 1.1rem;
+      border-radius: 9999px; border: 1px solid rgba(212,175,55,.2);
+      background: rgba(212,175,55,.05); color: var(--gold); font-size: .75rem;
+      font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif); font-size: clamp(1.8rem, 4.5vw, 2.7rem);
+      font-weight: 600; line-height: 1.2; margin-bottom: 0.5rem; color: var(--white);
+    }
+    .section-subtitle { font-size: 0.95rem; color: var(--gray-200); max-width: 500px; margin: 0 auto 2.5rem; }
+
+    /* Glassmorphic elements */
+    .glass-card {
+      background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06); border-radius: var(--radius-lg);
+      padding: var(--space-md); box-shadow: inset 0 1px 1px rgba(255,255,255, 0.06), var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(212, 175, 55, 0.35); box-shadow: inset 0 1px 2px rgba(255,255,255, 0.12), var(--shadow-glow);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.6rem;
+      border-radius: 9999px; font-size: .88rem; font-weight: 600; letter-spacing: .02em;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), background-color 0.3s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--navy-dark);
+      box-shadow: 0 4px 15px rgba(212,175,55,.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.025); box-shadow: 0 8px 20px rgba(212,175,55,.4), 0 0 12px rgba(212,175,55,.15);
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.975); }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03); color: var(--white);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.07); border-color: rgba(255,255,255,.3); transform: translateY(-2px);
+    }
+    .btn-outline:active { transform: translateY(0) scale(0.975); }
+
+    /* Sticky Floating Header bar */
+    .top-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0.75rem 0;
+      background: rgba(17, 26, 35, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,.05); display: flex; align-items: center;
+      transition: all 0.3s ease;
+    }
+    .top-header.scrolled { background: rgba(17, 26, 35, 0.85); box-shadow: 0 4px 30px rgba(0,0,0,.2); }
+    .header-wrap { display: flex; align-items: center; justify-content: space-between; }
+    .header-back-btn {
+      display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+      border-radius: 50%; color: var(--gray-200); border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02); transition: all 0.3s;
+    }
+    .header-back-btn:hover { color: var(--gold); border-color: rgba(212,175,55,.3); transform: translateX(-3px); }
+    .header-brand { font-size: 0.88rem; font-weight: 600; letter-spacing: 0.05em; color: var(--gray-200); }
+    .header-brand span { color: var(--gold); }
+
+    /* ═══════════ HERO SECTION ═══════════ */
+    .hero {
+      padding-top: 7.5rem; padding-bottom: 4rem; text-align: center; position: relative;
+    }
+    .hero-ganesh { font-family: var(--font-serif); font-size: 1.15rem; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 1.5rem; }
+    .hero-couples { font-family: var(--font-serif); font-size: clamp(2.4rem, 7vw, 4.4rem); font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 1.5rem; }
+    .hero-invite { font-size: 1.05rem; color: var(--gray-200); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.6; }
+    .hero-date { font-family: var(--font-serif); font-size: 1.4rem; color: var(--gold); font-weight: 600; margin-bottom: 0.5rem; }
+    .hero-venue { font-size: 0.88rem; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ═══════════ COUNTDOWN TIMER ═══════════ */
+    .countdown { padding: 2rem 0; }
+    .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 500px; margin: 0 auto; }
+    .countdown-grid > div { background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
+    .countdown-card { text-align: center; padding: 1.25rem 0.5rem; border-radius: var(--radius-md); }
+    .countdown-num { font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 0.35rem; }
+    .countdown-label { font-size: 0.72rem; color: var(--gray-200); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ═══════════ TIMELINE SECTION ═══════════ */
+    .timeline-track { position: relative; display: flex; flex-direction: column; gap: 2rem; }
+    .timeline-track::before {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 24px; width: 2px;
+      background: linear-gradient(180deg, transparent, rgba(212,175,55,0.4) 15%, rgba(212,175,55,0.4) 85%, transparent);
+    }
+    .timeline-item { position: relative; padding-left: 4.5rem; }
+    .timeline-dot {
+      position: absolute; left: 13px; top: 22px; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--navy-dark); border: 2.5px solid var(--gold); display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 15px rgba(212,175,55,0.25); z-index: 2;
+    }
+    .timeline-dot-inner { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+    .timeline-card { padding: 1.5rem; }
+    .timeline-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+    .timeline-title { font-family: var(--font-serif); font-size: 1.35rem; color: var(--white); font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .timeline-time { font-size: 0.8rem; font-weight: 600; color: var(--gold); padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.18); }
+    .timeline-venue-detail { font-size: 0.88rem; color: var(--gray-200); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.4rem; }
+    .timeline-date-detail { font-size: 0.88rem; color: var(--gray-300); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; }
+
+    /* ═══════════ VENUE SECTION ═══════════ */
+    .venue-card { text-align: center; padding: 2.5rem 2rem; }
+    .venue-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 1rem; display: inline-block; }
+    .venue-title { font-family: var(--font-serif); font-size: 1.5rem; color: var(--white); margin-bottom: 0.5rem; }
+    .venue-address { font-size: 0.95rem; color: var(--gray-200); margin-bottom: 1.5rem; max-width: 450px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+    /* ═══════════ COUPLE STORY ═══════════ */
+    .story-timeline { display: flex; flex-direction: column; gap: 2.5rem; position: relative; }
+    .story-timeline::before {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+      background: linear-gradient(180deg, transparent, rgba(212,175,55,0.3) 10%, rgba(212,175,55,0.3) 90%, transparent);
+      transform: translateX(-50%);
+    }
+    .story-item { position: relative; width: 100%; display: flex; justify-content: flex-start; }
+    .story-item:nth-child(even) { justify-content: flex-end; }
+    .story-dot {
+      position: absolute; left: 50%; top: 24px; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--navy-dark); border: 2.5px solid var(--gold); transform: translateX(-50%); z-index: 2;
+    }
+    .story-card { width: 45%; padding: 1.5rem; position: relative; }
+    .story-card::after {
+      content: ''; position: absolute; top: 22px; width: 12px; height: 12px;
+      background: var(--bg-glass); border-top: 1px solid rgba(255,255,255,0.06);
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .story-item:nth-child(odd) .story-card::after { right: -7px; transform: rotate(45deg); border-left: none; border-bottom: none; }
+    .story-item:nth-child(even) .story-card::after { left: -7px; transform: rotate(-135deg); border-left: none; border-bottom: none; }
+    
+    .story-step { font-size: 0.72rem; color: var(--gold); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .story-heading { font-family: var(--font-serif); font-size: 1.25rem; color: var(--white); margin-bottom: 0.5rem; }
+    .story-text { font-size: 0.85rem; color: var(--gray-200); line-height: 1.5; }
+
+    /* ═══════════ FAMILY SECTION ═══════════ */
+    .family-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .family-card { padding: 2rem 1.5rem; text-align: center; }
+    .family-title { font-family: var(--font-serif); font-size: 1.35rem; color: var(--gold); margin-bottom: 1.25rem; font-weight: 600; border-bottom: 1px solid rgba(212,175,55,0.25); padding-bottom: 0.5rem; }
+    .family-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .family-member { font-size: 0.9rem; color: var(--gray-200); }
+    .family-member strong { color: var(--white); font-weight: 600; }
+
+    /* ═══════════ RSVP SECTION ═══════════ */
+    .rsvp-card { padding: 2.5rem 2rem; max-width: 600px; margin: 0 auto; }
+    .form-group { margin-bottom: 1.25rem; text-align: left; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--gray-200); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm);
+      color: var(--white); font-size: 0.9rem; outline: none; transition: border-color 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.08); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-status-alert { padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 1.25rem; display: none; }
+    .form-status-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #A7F3D0; }
+
+    /* ═══════════ GUEST WISHES ═══════════ */
+    .wishes-layout { display: grid; grid-template-columns: 1.2fr 1.8fr; gap: 2rem; }
+    .wishes-form-card { padding: 2rem 1.5rem; height: fit-content; }
+    .wishes-board-card { padding: 2rem 1.5rem; display: flex; flex-direction: column; height: 350px; }
+    .wishes-wall { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding-right: 0.25rem; }
+    .wish-item {
+      padding: 0.75rem 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-sm); border-left: 2.5px solid var(--gold);
+    }
+    .wish-header { display: flex; justify-content: space-between; margin-bottom: 0.2rem; font-size: 0.82rem; }
+    .wish-author { color: var(--white); font-weight: 600; }
+    .wish-time { color: var(--gray-300); font-size: 0.72rem; }
+    .wish-text { font-size: 0.82rem; color: var(--gray-200); line-height: 1.45; }
+
+    /* ═══════════ GALLERY INTEGRATION ═══════════ */
+    .gallery-wrapper { display: none; }
+    .gallery-wrapper.unlocked { display: block; }
+    .category-filter { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .category-btn {
+      padding: 0.45rem 1.1rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02); color: var(--gray-200); font-size: 0.8rem; font-weight: 500; transition: all 0.3s;
+    }
+    .category-btn:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+    .category-btn.active { background: var(--gold); border-color: var(--gold); color: var(--navy-dark); font-weight: 600; }
+
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 3rem;
+    }
+    .gallery-item {
+      position: relative; aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+    }
+    .gallery-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .gallery-item:hover .gallery-img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0; background: linear-gradient(0deg, rgba(26, 37, 48, 0.7) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 1rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-tag { font-size: 0.72rem; color: var(--gold); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+
+    /* AI Face Search */
+    .ai-card { padding: 2rem; margin-bottom: 2.5rem; }
+    .ai-upload-box {
+      border: 1.5px dashed rgba(212,175,55,0.3); background: rgba(212,175,55,0.02);
+      border-radius: var(--radius-md); padding: 2.5rem 1.5rem; text-align: center;
+      transition: all 0.3s; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    }
+    .ai-upload-box:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+    .ai-upload-box svg { width: 34px; height: 34px; color: var(--gold); }
+    .ai-upload-title { font-size: 0.95rem; font-weight: 600; color: var(--white); }
+    .ai-upload-desc { font-size: 0.78rem; color: var(--gray-300); }
+    .scanner-active { position: relative; overflow: hidden; display: none; padding: 2rem; flex-direction: column; align-items: center; gap: 1rem; }
+    .scan-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
+    .scan-line {
+      width: 150px; height: 2px; background: var(--gold); box-shadow: 0 0 15px var(--gold);
+      animation: laserMove 1.6s ease-in-out infinite; margin-top: 0.5rem;
+    }
+    @keyframes laserMove { 0%, 100% { transform: translateY(-30px); opacity: 0.2; } 50% { transform: translateY(30px); opacity: 1; } }
+    
+    .match-banner {
+      display: none; align-items: center; justify-content: center; gap: 1rem;
+      padding: 0.75rem 1rem; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: var(--radius-sm); margin-top: 1rem; font-size: 0.88rem; color: var(--gold-light);
+    }
+
+    /* ═══════════ LIGHTBOX OVERLAY ═══════════ */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10000; background: rgba(17, 26, 35, 0.98);
+      display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;
+    }
+    .lightbox.show { display: flex; opacity: 1; }
+    .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--white); font-size: 2rem; cursor: pointer; }
+    .lightbox-img { max-width: 90%; max-height: 80vh; border-radius: var(--radius-sm); border: 2px solid rgba(255,255,255,0.05); }
+
+    /* ═══════════ QR CODE BADGE FOOTER ═══════════ */
+    .qr-badge-footer { padding: 4rem 0 2rem; text-align: center; }
+    .qr-badge-card {
+      display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-md); font-size: 0.75rem; color: var(--gray-200); text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .qr-badge-card svg { width: 16px; height: 16px; color: var(--gold); }
+
+    /* ═══════════ FLOATING MODE TOGGLE ═══════════ */
+    .theme-toggle-floating {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      width: 44px; height: 44px; border-radius: 50%; background: var(--bg-glass);
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center;
+      justify-content: center; color: var(--gray-200); cursor: pointer; transition: all 0.3s;
+      box-shadow: var(--shadow-md);
+    }
+    .theme-toggle-floating:hover { color: var(--gold); border-color: rgba(212,175,55,0.3); transform: scale(1.08); }
+    .theme-toggle-floating svg { width: 22px; height: 22px; fill: currentColor; }
+
+    /* Light Theme Styling Variable Overrides */
+    body.light-theme {
+      --navy: #FFFFFF;
+      --navy-light: #F3F4F6;
+      --navy-dark: #EBF0F5;
+      --white: #111A23;
+      --off-white: #111827;
+      --gray-100: #1F2937;
+      --gray-200: #374151;
+      --gray-300: #4B5563;
+      --bg: var(--navy);
+      --bg-card: rgba(243, 244, 246, 0.85);
+      --bg-glass: rgba(255, 255, 255, 0.7);
+      --text: var(--off-white);
+      --text-muted: var(--gray-200);
+      --shadow-md: 0 8px 30px rgba(0,0,0,.05);
+      --shadow-lg: 0 16px 60px rgba(0,0,0,.08);
+      --shadow-glow: 0 0 40px rgba(212,175,55,.05);
+    }
+
+    body.light-theme .theme-toggle-floating,
+    body.light-theme .header-back-btn {
+      border-color: rgba(0,0,0,0.08); background: rgba(0,0,0,0.02); color: #4B5563;
+    }
+    body.light-theme .theme-toggle-floating:hover,
+    body.light-theme .header-back-btn:hover {
+      color: var(--gold); border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.03);
+    }
+    body.light-theme .top-header { background: rgba(255, 255, 255, 0.8); border-bottom-color: rgba(0,0,0,0.08); }
+    body.light-theme .top-header.scrolled { background: rgba(255, 255, 255, 0.95); }
+    body.light-theme .header-brand { color: #374151; }
+    body.light-theme .timeline-dot { background: #EBF0F5; }
+    body.light-theme .story-dot { background: #EBF0F5; }
+    body.light-theme .story-card::after { background: var(--bg-glass); border-top-color: rgba(0,0,0,0.08); border-right-color: rgba(0,0,0,0.08); }
+    body.light-theme .form-group input, body.light-theme .form-group select { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); color: #111827; }
+    body.light-theme .form-group input:focus, body.light-theme .form-group select:focus { border-color: var(--gold); }
+    body.light-theme .wish-item { background: #FFFFFF; border-color: rgba(0,0,0,0.06); }
+    body.light-theme .wish-time { color: #6B7280; }
+    body.light-theme th { background: #F9FAFB !important; color: #111A23 !important; border-bottom: 2px solid rgba(0,0,0,0.08) !important; }
+    body.light-theme td { border-bottom: 1px solid rgba(0,0,0,0.06) !important; color: #374151 !important; }
+    body.light-theme .category-btn { background: #F3F4F6; border-color: rgba(0,0,0,0.08); color: #4B5563; }
+    body.light-theme .category-btn:hover { background: #E5E7EB; color: #111827; }
+    body.light-theme .category-btn.active { background: var(--gold); color: #FFFFFF; }
+    body.light-theme .ai-upload-box { background: #F9FAFB; border-color: rgba(0,0,0,0.12); }
+    body.light-theme .ai-upload-box:hover { background: rgba(212,175,55,0.02); border-color: var(--gold); }
+    body.light-theme .ai-upload-box p { color: #374151; }
+    body.light-theme .ai-upload-box span { color: #6B7280; }
+    body.light-theme .ai-upload-box svg { color: #4B5563; }
+    body.light-theme .scanner-active { background: #FFFFFF; border-color: rgba(0,0,0,0.08); }
+    body.light-theme .gallery-item { background: #F9FAFB; border-color: rgba(0,0,0,0.05); }
+
+    /* Responsive overrides */
+    @media (max-width: 768px) {
+      .wishes-layout { grid-template-columns: 1fr; }
+      .family-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+      .story-timeline::before { left: 24px; transform: none; }
+      .story-item { justify-content: flex-start; padding-left: 4.5rem; }
+      .story-item:nth-child(even) { justify-content: flex-start; }
+      .story-dot { left: 24px; transform: translateX(-50%); }
+      .story-card { width: 100%; }
+      .story-item .story-card::after { left: -7px !important; right: auto !important; transform: rotate(-135deg) !important; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .countdown-grid { gap: 0.5rem; }
+      .countdown-card { padding: 0.75rem 0.25rem; }
+      .form-row-2 { grid-template-columns: 1fr; gap: 0; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+    
+    .js-enabled .gs-hidden { opacity: 0; transform: translateY(35px); }
+  </style>
+</head>
+<body>
+  <script>(function(){ if(document.documentElement.classList.contains('light-theme')) document.body.classList.add('light-theme'); })();</script>
+
+  <!-- ═══════════ BACKGROUND ORBS ═══════════ -->
+  <div class="bg-glow">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="particles-bg" id="particles-container">
+    <!-- Drift particles will be populated by JS -->
+  </div>
+
+  <!-- ═══════════ FIXED HEADER ═══════════ -->
+  <header class="top-header" id="topbar">
+    <div class="container header-wrap">
+      <a href="dashboard.html" class="header-back-btn" aria-label="Go back to dashboard" onclick="if(document.referrer.includes('dashboard.html')) { window.history.back(); return false; }">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
+      <div class="header-brand">Pixlora <span>Studio</span></div>
+      <div style="width: 34px;"></div>
+    </div>
+  </header>
+
+  <!-- ═══════════ HERO COVER ═══════════ -->
+  <section class="hero container text-center">
+    <div class="hero-ganesh gs-hidden">🕉️ श्री गणेशाय नमः</div>
+    <h1 class="hero-couples gs-hidden"><span id="hero-groom">Divyansh</span> <span class="gold-text">❤️</span> <span id="hero-bride">Priya</span></h1>
+    <div class="gold-separator gs-hidden">
+      <span></span>
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span></span>
+    </div>
+    <p class="hero-invite gs-hidden">Together with their families, invite you to celebrate their wedding and bless the couple as they begin their journey together.</p>
+    <div class="hero-date gs-hidden" id="hero-date">28 February 2027</div>
+    <div class="hero-venue gs-hidden" id="hero-venue">The Taj Palace, New Delhi</div>
+  </section>
+
+  <!-- ═══════════ COUNTDOWN TIMER ═══════════ -->
+  <section class="countdown container">
+    <div class="countdown-grid">
+      <div class="countdown-card glass-card gs-hidden">
+        <div class="countdown-num" id="timer-days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-card glass-card gs-hidden">
+        <div class="countdown-num" id="timer-hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-card glass-card gs-hidden">
+        <div class="countdown-num" id="timer-mins">00</div>
+        <div class="countdown-label">Mins</div>
+      </div>
+      <div class="countdown-card glass-card gs-hidden">
+        <div class="countdown-num" id="timer-secs">00</div>
+        <div class="countdown-label">Secs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TIMELINE SECTION ═══════════ -->
+  <section class="section-pad container text-center">
+    <div class="section-badge gs-hidden">Wedding Events</div>
+    <h2 class="section-title gs-hidden">The Celebration Schedule</h2>
+    <p class="section-subtitle gs-hidden">Join us across our traditional celebrations spanning multiple auspicious functions.</p>
+
+    <div class="timeline-track">
+      <!-- Haldi -->
+      <div class="timeline-item gs-hidden">
+        <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <div class="timeline-title">🟡 Haldi Ceremony</div>
+            <div class="timeline-time">10:00 AM</div>
+          </div>
+          <div class="timeline-date-detail">📅 Thursday, Feb 25, 2027</div>
+          <div class="timeline-venue-detail">📍 Poolside Lawns, The Taj Palace</div>
+        </div>
+      </div>
+
+      <!-- Mehendi -->
+      <div class="timeline-item gs-hidden">
+        <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <div class="timeline-title">🟢 Mehendi Night</div>
+            <div class="timeline-time">04:00 PM</div>
+          </div>
+          <div class="timeline-date-detail">📅 Thursday, Feb 25, 2027</div>
+          <div class="timeline-venue-detail">📍 Darbar Hall Garden, The Taj Palace</div>
+        </div>
+      </div>
+
+      <!-- Sangeet -->
+      <div class="timeline-item gs-hidden">
+        <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <div class="timeline-title">🎵 Sangeet & Beats</div>
+            <div class="timeline-time">07:30 PM</div>
+          </div>
+          <div class="timeline-date-detail">📅 Friday, Feb 26, 2027</div>
+          <div class="timeline-venue-detail">📍 Grand Ballroom, The Taj Palace</div>
+        </div>
+      </div>
+
+      <!-- Wedding -->
+      <div class="timeline-item gs-hidden">
+        <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <div class="timeline-title">🔥 Phere & Wedding Ceremony</div>
+            <div class="timeline-time">06:00 PM</div>
+          </div>
+          <div class="timeline-date-detail">📅 Saturday, Feb 27, 2027</div>
+          <div class="timeline-venue-detail">📍 Central Mandap Courtyard, The Taj Palace</div>
+        </div>
+      </div>
+
+      <!-- Reception -->
+      <div class="timeline-item gs-hidden">
+        <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <div class="timeline-title">✨ Reception Party</div>
+            <div class="timeline-time">08:00 PM</div>
+          </div>
+          <div class="timeline-date-detail">📅 Sunday, Feb 28, 2027</div>
+          <div class="timeline-venue-detail">📍 Royal Gardens, The Taj Palace</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ VENUE SECTION ═══════════ -->
+  <section class="section-pad container">
+    <div class="venue-card glass-card gs-hidden text-center">
+      <span class="venue-icon">🕌</span>
+      <h2 class="venue-title" id="venue-title">The Taj Palace, New Delhi</h2>
+      <p class="venue-address" id="venue-address">Sardar Patel Marg, Diplomatic Enclave, Chanakyapuri, New Delhi, Delhi 110021</p>
+      <a href="https://maps.app.goo.gl/hG5M8F7D9kP2r7a" target="_blank" id="maps-link" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        Get Directions
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════ STORY SECTION ═══════════ -->
+  <section class="section-pad container text-center">
+    <div class="section-badge gs-hidden">Our Story</div>
+    <h2 class="section-title gs-hidden">How It All Began</h2>
+    <p class="section-subtitle gs-hidden">A beautiful timeline of the moments that brought us together.</p>
+
+    <div class="story-timeline">
+      <!-- How We Met -->
+      <div class="story-item gs-hidden">
+        <div class="story-dot"></div>
+        <div class="story-card glass-card">
+          <div class="story-step">Step 1</div>
+          <h3 class="story-heading">How We Met</h3>
+          <p class="story-text">Introduced by mutual friends during a beautiful autumn afternoon. A casual coffee chat turned into a conversation that lasted for hours.</p>
+        </div>
+      </div>
+
+      <!-- Our Journey -->
+      <div class="story-item gs-hidden">
+        <div class="story-dot"></div>
+        <div class="story-card glass-card">
+          <div class="story-step">Step 2</div>
+          <h3 class="story-heading">Our Journey</h3>
+          <p class="story-text">Through shared laughs, late-night chats, and weekend travel adventures, we realized we wanted to hold hands through all of life's twists and turns.</p>
+        </div>
+      </div>
+
+      <!-- The Proposal -->
+      <div class="story-item gs-hidden">
+        <div class="story-dot"></div>
+        <div class="story-card glass-card">
+          <div class="story-step">Step 3</div>
+          <h3 class="story-heading">The Proposal</h3>
+          <p class="story-text">He took her to a scenic mountain sunset overlooking the valleys, got down on one knee, and asked her to spend the rest of her life with him. She said YES!</p>
+        </div>
+      </div>
+
+      <!-- The Wedding -->
+      <div class="story-item gs-hidden">
+        <div class="story-dot"></div>
+        <div class="story-card glass-card">
+          <div class="story-step">Step 4</div>
+          <h3 class="story-heading">The Wedding</h3>
+          <p class="story-text">Celebrating our forever promises today with the blessings of our families and closest loved ones. We are excited to write our next chapters.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FAMILY SECTION ═══════════ -->
+  <section class="section-pad container">
+    <div class="family-grid">
+      <div class="family-card glass-card gs-hidden">
+        <h3 class="family-title" id="groom-family-title">Groom's Family</h3>
+        <div class="family-list">
+          <div class="family-member">Parents: <strong>Mr. & Mrs. R. K. Pandey</strong></div>
+          <div class="family-member">Grandparents: <strong>Late Shri B. N. Pandey</strong></div>
+          <div class="family-member">Siblings: <strong>Aditya & Kritika Pandey</strong></div>
+        </div>
+      </div>
+      <div class="family-card glass-card gs-hidden">
+        <h3 class="family-title" id="bride-family-title">Bride's Family</h3>
+        <div class="family-list">
+          <div class="family-member">Parents: <strong>Mr. & Mrs. S. K. Sharma</strong></div>
+          <div class="family-member">Grandparents: <strong>Late Shri V. D. Sharma</strong></div>
+          <div class="family-member">Siblings: <strong>Nikhil & Tanvi Sharma</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ RSVP SECTION ═══════════ -->
+  <section class="section-pad container text-center">
+    <div class="section-badge gs-hidden">RSVP</div>
+    <h2 class="section-title gs-hidden">Will You Attend?</h2>
+    <p class="section-subtitle gs-hidden">Kindly respond by February 15, 2027, to help us arrange for your hospitality.</p>
+
+    <div class="rsvp-card glass-card gs-hidden">
+      <div class="form-status-alert form-status-success" id="rsvp-status-alert">Thank you! Your RSVP response has been recorded.</div>
+      <form id="rsvp-form" onsubmit="submitRSVP(event)">
+        <div class="form-group">
+          <label for="rsvp-name">Full Name</label>
+          <input type="text" id="rsvp-name" placeholder="E.g., Rajesh Sharma" required />
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="rsvp-phone">Phone Number</label>
+            <input type="tel" id="rsvp-phone" placeholder="E.g., +91 98765 43210" required />
+          </div>
+          <div class="form-group">
+            <label for="rsvp-guests">Number of Guests</label>
+            <select id="rsvp-guests">
+              <option value="1">1 Person</option>
+              <option value="2">2 Persons</option>
+              <option value="3">3 Persons</option>
+              <option value="4">4 Persons</option>
+              <option value="5">5+ Persons</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rsvp-status">Attendance</label>
+          <select id="rsvp-status">
+            <option value="Attending">Yes, I will attend</option>
+            <option value="Not Attending">Sorry, I cannot make it</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          Confirm RSVP
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════ GUEST WISHES SECTION ═══════════ -->
+  <section class="section-pad container text-center">
+    <div class="section-badge gs-hidden">Wishes Wall</div>
+    <h2 class="section-title gs-hidden">Congratulate the Couple</h2>
+    <p class="section-subtitle gs-hidden">Leave a blessing, greeting, or warm message for the couple's new beginning.</p>
+
+    <div class="wishes-layout">
+      <!-- Leave a wish -->
+      <div class="wishes-form-card glass-card gs-hidden">
+        <form id="wishes-form" onsubmit="submitWish(event)">
+          <div class="form-group">
+            <label for="wish-name">Your Name</label>
+            <input type="text" id="wish-name" placeholder="E.g., Amit Pandey" required />
+          </div>
+          <div class="form-group">
+            <label for="wish-message">Your Blessings / Greeting</label>
+            <input type="text" id="wish-message" placeholder="Congratulations ❤️" required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+            Post Wish
+          </button>
+        </form>
+      </div>
+
+      <!-- Wishes Wall board -->
+      <div class="wishes-board-card glass-card gs-hidden">
+        <div class="wishes-wall" id="wishes-board-container">
+          <!-- Wishes will be loaded here dynamically -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ WEDDING GALLERY INTEGRATION ═══════════ -->
+  <div class="gallery-wrapper" id="gallery-wrapper-section">
+    <section class="section-pad container text-center">
+      <div class="section-badge">Celebration Memories</div>
+      <h2 class="section-title">The Wedding Album</h2>
+      <p class="section-subtitle">Browse photo collections and find your memories instantly using AI Face Search.</p>
+
+      <!-- AI Face search card -->
+      <div class="ai-card glass-card gs-hidden">
+        <h3 class="section-title" style="font-size: 1.35rem; margin-bottom: 0.75rem;">Find My Photos</h3>
+        <p class="section-subtitle" style="font-size: 0.88rem; margin-bottom: 1.5rem;">Upload a selfie and instantly find all your photos.</p>
+
+        <!-- Upload Selfie Box -->
+        <div class="ai-upload-box" id="selfie-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <div class="ai-upload-title">Click to Upload Selfie</div>
+          <div class="ai-upload-desc">Selfie matches in seconds</div>
+        </div>
+
+        <!-- Hidden Input File -->
+        <input type="file" id="selfie-file" accept="image/*" style="display: none;" />
+
+        <!-- Camera Scanner active -->
+        <div class="scanner-active" id="scanner-box">
+          <img class="scan-avatar" id="scanner-avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Selfie avatar">
+          <div class="scan-line"></div>
+          <div style="font-size: 0.85rem; color: var(--gold);">AI indexing facial maps...</div>
+        </div>
+
+        <!-- Success Match Banner -->
+        <div class="match-banner" id="match-banner-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <strong>4 Photos Matched!</strong> Filtered gallery below.
+        </div>
+      </div>
+
+      <!-- Categories filter pills -->
+      <div class="category-filter gs-hidden">
+        <button class="category-btn active" onclick="filterGallery('all', this)">All Photos</button>
+        <button class="category-btn" onclick="filterGallery('haldi', this)">Haldi</button>
+        <button class="category-btn" onclick="filterGallery('mehendi', this)">Mehendi</button>
+        <button class="category-btn" onclick="filterGallery('sangeet', this)">Sangeet</button>
+        <button class="category-btn" onclick="filterGallery('wedding', this)">Wedding</button>
+        <button class="category-btn" onclick="filterGallery('reception', this)">Reception</button>
+        <button class="category-btn" onclick="filterGallery('matched', this)" style="display:none;" id="btn-cat-matched">🔍 Matched</button>
+      </div>
+
+      <!-- Photo grid -->
+      <div class="gallery-grid" id="photo-grid-box">
+        <!-- Photo thumbnails will be injected here -->
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════ LIGHTBOX ELEMENT ═══════════ -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="View Photos" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- ═══════════ QR CODE BADGE ═══════════ -->
+  <section class="qr-badge-footer container text-center">
+    <div class="qr-badge-card gs-hidden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="17" y1="7" x2="17.01" y2="7"/><line x1="7" y1="18" x2="7.01" y2="18"/><line x1="17" y1="17" x2="17.01" y2="17"/></svg>
+      <span>Accessed via Pixlora QR Invitation</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ FLOATING THEME TOGGLE ═══════════ -->
+  <button class="theme-toggle-floating" id="theme-toggle" aria-label="Toggle dark/light theme">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
+  <!-- ═══════════ SCRIPTS ═══════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    if (hasGsap) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Theme handler
+      const toggleBtn = document.getElementById("theme-toggle");
+      const toggleTheme = () => {
+        const isLight = document.body.classList.toggle("light-theme");
+        document.documentElement.classList.toggle("light-theme", isLight);
+        localStorage.setItem("pixlora-theme", isLight ? "light" : "dark");
+      };
+      if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+
+      // Scrolled topbar handler
+      const topbar = document.getElementById("topbar");
+      window.addEventListener("scroll", () => {
+        topbar.classList.toggle("scrolled", window.scrollY > 40);
+      }, { passive: true });
+
+      // 2. Load Configuration from LocalStorage
+      const defaultConfig = {
+        groomName: "Divyansh",
+        brideName: "Priya",
+        weddingDate: "2027-02-28",
+        venueName: "The Taj Palace, New Delhi",
+        venueAddress: "Sardar Patel Marg, Diplomatic Enclave, Chanakyapuri, New Delhi, Delhi 110021",
+        mapsLink: "https://maps.app.goo.gl/hG5M8F7D9kP2r7a",
+        groomFamily: "Pandey Family",
+        brideFamily: "Sharma Family",
+        galleryUnlocked: true
+      };
+
+      const storedConfig = localStorage.getItem("pixlora-wedding-card-config");
+      const config = storedConfig ? JSON.parse(storedConfig) : defaultConfig;
+
+      document.getElementById("hero-groom").textContent = config.groomName;
+      document.getElementById("hero-bride").textContent = config.brideName;
+      document.getElementById("hero-venue").textContent = config.venueName;
+      document.getElementById("venue-title").textContent = config.venueName;
+      document.getElementById("venue-address").textContent = config.venueAddress;
+      document.getElementById("maps-link").href = config.mapsLink;
+      document.getElementById("groom-family-title").textContent = config.groomFamily;
+      document.getElementById("bride-family-title").textContent = config.brideFamily;
+
+      // Date Format: 28 February 2027
+      const weddingDateObj = new Date(config.weddingDate);
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const formattedDate = weddingDateObj.toLocaleDateString('en-IN', options);
+      document.getElementById("hero-date").textContent = formattedDate;
+
+      // 3. Countdown Timer Logic
+      const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const target = weddingDateObj.getTime();
+        const diff = target - now;
+
+        if (diff <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("timer-days").textContent = "00";
+          document.getElementById("timer-hours").textContent = "00";
+          document.getElementById("timer-mins").textContent = "00";
+          document.getElementById("timer-secs").textContent = "00";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("timer-days").textContent = String(days).padStart(2, "0");
+        document.getElementById("timer-hours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("timer-mins").textContent = String(minutes).padStart(2, "0");
+        document.getElementById("timer-secs").textContent = String(seconds).padStart(2, "0");
+      }, 1000);
+
+      // 4. Populate drifting gold background particles
+      const container = document.getElementById("particles-container");
+      for (let i = 0; i < 8; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.top = Math.random() * 90 + "vh";
+        p.style.left = Math.random() * 90 + "vw";
+        p.style.animationDelay = (Math.random() * 8) + "s";
+        p.style.animationDuration = (12 + Math.random() * 12) + "s";
+        container.appendChild(p);
+      }
+
+      // 5. Load Guest Wishes List
+      loadWishesWall();
+
+      // 6. Handle Gallery and AI search unlock
+      const queryParams = new URLSearchParams(window.location.search);
+      const isParamUnlock = queryParams.get("gallery") === "unlocked";
+      if (config.galleryUnlocked || isParamUnlock) {
+        document.getElementById("gallery-wrapper-section").classList.add("unlocked");
+        renderPhotos();
+      }
+
+      // Selfie Box upload handler simulation
+      const selfieBox = document.getElementById("selfie-box");
+      const fileInput = document.getElementById("selfie-file");
+
+      selfieBox?.addEventListener("click", () => fileInput.click());
+      fileInput?.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          triggerAiFaceSearch();
+        }
+      });
+
+      // 7. GSAP entrance reveals
+      if (hasGsap) {
+        gsap.utils.toArray('.gs-hidden').forEach(el => {
+          gsap.fromTo(el, 
+            { opacity: 0, y: 35 },
+            { 
+              opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+              onComplete: () => el.classList.remove('gs-hidden')
+            }
+          );
+        });
+      } else {
+        document.querySelectorAll('.gs-hidden').forEach(el => el.classList.remove('gs-hidden'));
+      }
+    });
+
+    // ═══════════ RSVP FORMS CONTROLLER ═══════════
+    function submitRSVP(event) {
+      event.preventDefault();
+      const rsvp = {
+        name: document.getElementById("rsvp-name").value,
+        phone: document.getElementById("rsvp-phone").value,
+        guests: document.getElementById("rsvp-guests").value,
+        status: document.getElementById("rsvp-status").value
+      };
+
+      const stored = localStorage.getItem("pixlora-rsvps");
+      const list = stored ? JSON.parse(stored) : [];
+      list.push(rsvp);
+      localStorage.setItem("pixlora-rsvps", JSON.stringify(list));
+
+      // Show success alert
+      const alertBox = document.getElementById("rsvp-status-alert");
+      alertBox.style.display = "block";
+      document.getElementById("rsvp-form").reset();
+
+      setTimeout(() => {
+        alertBox.style.display = "none";
+      }, 4000);
+    }
+
+    // ═══════════ GUEST WISHES BOARD ═══════════
+    function loadWishesWall() {
+      const container = document.getElementById("wishes-board-container");
+      container.innerHTML = "";
+
+      const defaultWishes = [
+        { name: "Amit Pandey", message: "Congratulations Divyansh & Priya! Wishing you a lifetime of love and happiness. ❤️" },
+        { name: "Sneha Reddy", message: "Wishing the beautiful couple all the joy in the world. Haldi functions look beautiful!" },
+        { name: "Rohan & Riya", message: "So happy for you both! Can't wait for the Sangeet night! 🎵" }
+      ];
+
+      const stored = localStorage.getItem("pixlora-wishes");
+      const list = stored ? JSON.parse(stored) : defaultWishes;
+
+      list.reverse().forEach(wish => {
+        const item = document.createElement("div");
+        item.className = "wish-item";
+        item.innerHTML = `
+          <div class="wish-header">
+            <span class="wish-author">${wish.name}</span>
+            <span class="wish-time">Posted Just Now</span>
+          </div>
+          <p class="wish-text">${wish.message}</p>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function submitWish(event) {
+      event.preventDefault();
+      const wish = {
+        name: document.getElementById("wish-name").value,
+        message: document.getElementById("wish-message").value
+      };
+
+      const stored = localStorage.getItem("pixlora-wishes");
+      const list = stored ? JSON.parse(stored) : [];
+      list.push(wish);
+      localStorage.setItem("pixlora-wishes", JSON.stringify(list));
+
+      document.getElementById("wish-name").value = "";
+      document.getElementById("wish-message").value = "";
+      loadWishesWall();
+    }
+
+    // ═══════════ GALLERY ENGINE ═══════════
+    const photosDataset = [
+      { id: 1, category: "haldi", isMatch: true, url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800" },
+      { id: 2, category: "mehendi", isMatch: false, url: "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&q=80&w=800" },
+      { id: 3, category: "sangeet", isMatch: true, url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800" },
+      { id: 4, category: "wedding", isMatch: true, url: "https://images.unsplash.com/photo-1615966661401-89133ad77402?auto=format&fit=crop&q=80&w=800" },
+      { id: 5, category: "reception", isMatch: false, url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" },
+      { id: 6, category: "haldi", isMatch: false, url: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800" },
+      { id: 7, category: "mehendi", isMatch: true, url: "https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?auto=format&fit=crop&q=80&w=800" },
+      { id: 8, category: "sangeet", isMatch: false, url: "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=800" },
+      { id: 9, category: "wedding", isMatch: false, url: "https://images.unsplash.com/photo-1507504038482-7621434c3cf9?auto=format&fit=crop&q=80&w=800" }
+    ];
+
+    function renderPhotos(filter = "all") {
+      const grid = document.getElementById("photo-grid-box");
+      grid.innerHTML = "";
+
+      let list = photosDataset;
+      if (filter !== "all") {
+        if (filter === "matched") {
+          list = photosDataset.filter(p => p.isMatch);
+        } else {
+          list = photosDataset.filter(p => p.category === filter);
+        }
+      }
+
+      list.forEach(photo => {
+        const item = document.createElement("div");
+        item.className = "gallery-item";
+        item.onclick = () => openLightbox(photo.url);
+        item.innerHTML = `
+          <img src="${photo.url}" alt="Wedding Memory" class="gallery-img" loading="lazy">
+          <div class="gallery-overlay">
+            <span class="gallery-tag">${photo.category}</span>
+          </div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    function filterGallery(category, buttonElement) {
+      document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+      buttonElement.classList.add("active");
+      renderPhotos(category);
+    }
+
+    // AI Face search simulation trigger
+    function triggerAiFaceSearch() {
+      const uploadBox = document.getElementById("selfie-box");
+      const scannerBox = document.getElementById("scanner-box");
+      const matchBanner = document.getElementById("match-banner-box");
+
+      uploadBox.style.display = "none";
+      matchBanner.style.display = "none";
+      scannerBox.style.display = "flex";
+
+      setTimeout(() => {
+        scannerBox.style.display = "none";
+        matchBanner.style.display = "flex";
+        uploadBox.style.display = "flex";
+
+        // Unlock matched category button and trigger it active
+        const matchedBtn = document.getElementById("btn-cat-matched");
+        matchedBtn.style.display = "inline-block";
+        filterGallery("matched", matchedBtn);
+      }, 1800);
+    }
+
+    // ═══════════ LIGHTBOX CONTROLLER ═══════════
+    function openLightbox(url) {
+      const lightbox = document.getElementById("lightbox");
+      const img = document.getElementById("lightbox-img");
+      img.src = url;
+      lightbox.classList.add("show");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").classList.remove("show");
+    }
+  </script>
+</body>
+</html>

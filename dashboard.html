@@ -861,6 +861,12 @@
     body.light-theme .log-file {
       color: #4B5563;
     }
+    
+    /* Guest Wishes widget on Wedding Card panel */
+    body.light-theme #list-wedding-wishes > div {
+      background: #FFFFFF !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+    }
   </style>
 </head>
 <body>
@@ -917,6 +923,10 @@
       <div class="menu-item" data-target="panel-downloads" onclick="switchPanel(this)">
         <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3zm-5.5-8h-3v3H7l5 5 5-5h-3.5z"/></svg>
         Downloads
+      </div>
+      <div class="menu-item" data-target="panel-wedding-card" onclick="switchPanel(this)">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Wedding Card
       </div>
     </nav>
 
@@ -1468,6 +1478,121 @@
         </div>
       </section>
 
+      <!-- ═══════════ PANEL 7: DIGITAL WEDDING CARD ═══════════ -->
+      <section class="dashboard-panel" id="panel-wedding-card">
+        <!-- TOP ACTIONS BAR -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+          <a href="wedding-card.html" target="_blank" class="btn-quick-create" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--navy-dark); text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            <span>Live Invitation Page</span>
+          </a>
+          <button class="btn-quick-create" onclick="printWeddingCardQR()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--white);">
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            <span>Print QR Poster</span>
+          </button>
+        </div>
+
+        <!-- TWO COLUMN GRID -->
+        <div class="dashboard-grid-2">
+          <!-- LEFT COLUMN: SETTINGS FORM -->
+          <div class="form-card" style="margin-bottom: 0;">
+            <h3 class="form-section-title">Configure Wedding Invitation</h3>
+            <form id="form-wedding-card" onsubmit="saveWeddingCardConfig(event)">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="invite-groom">Groom Name</label>
+                  <input type="text" id="invite-groom" required value="Divyansh">
+                </div>
+                <div class="form-group">
+                  <label for="invite-bride">Bride Name</label>
+                  <input type="text" id="invite-bride" required value="Priya">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="invite-date">Wedding Date</label>
+                  <input type="date" id="invite-date" required value="2027-02-28">
+                </div>
+                <div class="form-group">
+                  <label for="invite-venue">Venue Name</label>
+                  <input type="text" id="invite-venue" required value="The Taj Palace, New Delhi">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="invite-venue-address">Venue Full Address</label>
+                <input type="text" id="invite-venue-address" required value="Sardar Patel Marg, Diplomatic Enclave, Chanakyapuri, New Delhi, Delhi 110021">
+              </div>
+
+              <div class="form-group">
+                <label for="invite-maps-link">Google Maps Direction Link</label>
+                <input type="url" id="invite-maps-link" required value="https://maps.app.goo.gl/hG5M8F7D9kP2r7a">
+              </div>
+
+              <h4 class="form-section-title" style="font-size: 1rem; margin-top: 1.5rem; padding-bottom: 0.5rem;">Family Settings</h4>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="invite-groom-family">Groom Family Invite Text</label>
+                  <input type="text" id="invite-groom-family" value="Pandey Family">
+                </div>
+                <div class="form-group">
+                  <label for="invite-bride-family">Bride Family Invite Text</label>
+                  <input type="text" id="invite-bride-family" value="Sharma Family">
+                </div>
+              </div>
+
+              <h4 class="form-section-title" style="font-size: 1rem; margin-top: 1.5rem; padding-bottom: 0.5rem;">Gallery Integration</h4>
+              <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+                <input type="checkbox" id="invite-unlock-gallery" style="width: auto;" checked>
+                <label for="invite-unlock-gallery" style="margin-bottom: 0; cursor: pointer;">Automatically Unlock Wedding Photo Gallery & AI Search</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                Save Configuration
+              </button>
+            </form>
+          </div>
+
+          <!-- RIGHT COLUMN: RSVPs & WISHES -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- RSVP WIDGET -->
+            <div class="form-card" style="margin-bottom: 0; height: 350px; display: flex; flex-direction: column;">
+              <h3 class="form-section-title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>RSVP Responses</span>
+                <span class="status-badge active" id="rsvp-count-badge">0 Guests</span>
+              </h3>
+              <div style="flex: 1; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;" id="table-wedding-rsvps">
+                  <thead>
+                    <tr>
+                      <th style="padding: 0.75rem; font-size: 0.8rem;">Name</th>
+                      <th style="padding: 0.75rem; font-size: 0.8rem;">Phone</th>
+                      <th style="padding: 0.75rem; font-size: 0.8rem; text-align: center;">Guests</th>
+                      <th style="padding: 0.75rem; font-size: 0.8rem;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-wedding-rsvps">
+                    <!-- RSVP rows will be injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- GUEST WISHES WIDGET -->
+            <div class="form-card" style="margin-bottom: 0; height: 320px; display: flex; flex-direction: column;">
+              <h3 class="form-section-title" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>Guest Wishes</span>
+                <span class="status-badge active" style="background: rgba(212,175,55,0.12); color: var(--gold);" id="wishes-count-badge">0 Messages</span>
+              </h3>
+              <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding-right: 0.25rem;" id="list-wedding-wishes">
+                <!-- Wishes will be injected here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -1599,6 +1724,9 @@
       if (targetId === "panel-gallery-views") {
         const activeEventId = document.getElementById("analyticsEventSelect").value || "event-1";
         renderAnalyticsChart(activeEventId);
+      }
+      if (targetId === "panel-wedding-card") {
+        loadWeddingCardData();
       }
     }
 
@@ -2080,6 +2208,175 @@
           window.location.href = "login.html";
         }, 1200);
       }
+    }
+
+    // ═══════════ DIGITAL WEDDING CARD MANAGER ═══════════
+    function loadWeddingCardData() {
+      // 1. Load config
+      const defaultConfig = {
+        groomName: "Divyansh",
+        brideName: "Priya",
+        weddingDate: "2027-02-28",
+        venueName: "The Taj Palace, New Delhi",
+        venueAddress: "Sardar Patel Marg, Diplomatic Enclave, Chanakyapuri, New Delhi, Delhi 110021",
+        mapsLink: "https://maps.app.goo.gl/hG5M8F7D9kP2r7a",
+        groomFamily: "Pandey Family",
+        brideFamily: "Sharma Family",
+        galleryUnlocked: true
+      };
+
+      const storedConfig = localStorage.getItem("pixlora-wedding-card-config");
+      const config = storedConfig ? JSON.parse(storedConfig) : defaultConfig;
+
+      // Populate input fields
+      document.getElementById("invite-groom").value = config.groomName;
+      document.getElementById("invite-bride").value = config.brideName;
+      document.getElementById("invite-date").value = config.weddingDate;
+      document.getElementById("invite-venue").value = config.venueName;
+      document.getElementById("invite-venue-address").value = config.venueAddress;
+      document.getElementById("invite-maps-link").value = config.mapsLink;
+      document.getElementById("invite-groom-family").value = config.groomFamily;
+      document.getElementById("invite-bride-family").value = config.brideFamily;
+      document.getElementById("invite-unlock-gallery").checked = config.galleryUnlocked;
+
+      // 2. Load RSVPs
+      loadRSVPs();
+
+      // 3. Load Wishes
+      loadWishes();
+    }
+
+    function saveWeddingCardConfig(event) {
+      if (event) event.preventDefault();
+      const config = {
+        groomName: document.getElementById("invite-groom").value,
+        brideName: document.getElementById("invite-bride").value,
+        weddingDate: document.getElementById("invite-date").value,
+        venueName: document.getElementById("invite-venue").value,
+        venueAddress: document.getElementById("invite-venue-address").value,
+        mapsLink: document.getElementById("invite-maps-link").value,
+        groomFamily: document.getElementById("invite-groom-family").value,
+        brideFamily: document.getElementById("invite-bride-family").value,
+        galleryUnlocked: document.getElementById("invite-unlock-gallery").checked
+      };
+
+      localStorage.setItem("pixlora-wedding-card-config", JSON.stringify(config));
+      showNotificationToast("Configuration Saved", "Digital Wedding Card settings updated successfully.");
+    }
+
+    function loadRSVPs() {
+      const defaultRSVPs = [
+        { name: "Rajesh Kumar", phone: "+91 98765 43210", guests: 3, status: "Attending" },
+        { name: "Anjali Gupta", phone: "+91 91234 56789", guests: 2, status: "Attending" },
+        { name: "Suresh Sharma", phone: "+91 99887 76655", guests: 1, status: "Attending" },
+        { name: "Vikram Singh", phone: "+91 98712 34567", guests: 4, status: "Attending" }
+      ];
+
+      let rsvps = localStorage.getItem("pixlora-rsvps");
+      if (!rsvps) {
+        localStorage.setItem("pixlora-rsvps", JSON.stringify(defaultRSVPs));
+        rsvps = defaultRSVPs;
+      } else {
+        rsvps = JSON.parse(rsvps);
+      }
+
+      const tbody = document.getElementById("tbody-wedding-rsvps");
+      tbody.innerHTML = "";
+
+      let totalGuests = 0;
+      rsvps.forEach(rsvp => {
+        totalGuests += parseInt(rsvp.guests) || 1;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="padding: 0.75rem; font-size: 0.82rem;"><strong style="color:var(--white);">${rsvp.name}</strong></td>
+          <td style="padding: 0.75rem; font-size: 0.78rem; color:var(--gray-300);">${rsvp.phone}</td>
+          <td style="padding: 0.75rem; font-size: 0.82rem; text-align: center;">${rsvp.guests}</td>
+          <td style="padding: 0.75rem; font-size: 0.75rem;"><span class="status-badge active" style="padding: 0.15rem 0.45rem;">${rsvp.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("rsvp-count-badge").textContent = `${totalGuests} Guests`;
+    }
+
+    function loadWishes() {
+      const defaultWishes = [
+        { name: "Amit Pandey", message: "Congratulations Divyansh & Priya! Wishing you a lifetime of love and happiness. ❤️" },
+        { name: "Sneha Reddy", message: "Wishing the beautiful couple all the joy in the world. Haldi functions look beautiful!" },
+        { name: "Rohan & Riya", message: "So happy for you both! Can't wait for the Sangeet night! 🎵" }
+      ];
+
+      let wishes = localStorage.getItem("pixlora-wishes");
+      if (!wishes) {
+        localStorage.setItem("pixlora-wishes", JSON.stringify(defaultWishes));
+        wishes = defaultWishes;
+      } else {
+        wishes = JSON.parse(wishes);
+      }
+
+      const container = document.getElementById("list-wedding-wishes");
+      container.innerHTML = "";
+
+      wishes.forEach(wish => {
+        const item = document.createElement("div");
+        item.style.padding = "0.75rem";
+        item.style.background = "rgba(255,255,255,0.02)";
+        item.style.border = "1px solid rgba(255,255,255,0.05)";
+        item.style.borderRadius = "var(--radius-sm)";
+        item.style.display = "flex";
+        item.style.flexDirection = "column";
+        item.style.gap = "0.25rem";
+        item.innerHTML = `
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+            <strong style="color:var(--white);">${wish.name}</strong>
+            <span style="color:var(--gold); font-size:0.75rem;">✨ Wish</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--gray-200); line-height: 1.4;">${wish.message}</p>
+        `;
+        container.appendChild(item);
+      });
+
+      document.getElementById("wishes-count-badge").textContent = `${wishes.length} Wishes`;
+    }
+
+    function printWeddingCardQR() {
+      // Create a temporary poster structure in print media
+      const inviteUrl = window.location.href.replace("dashboard.html", "wedding-card.html");
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(inviteUrl)}&color=1a2530`;
+
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Wedding Card QR Poster</title>
+            <style>
+              body { font-family: 'Playfair Display', Georgia, serif; text-align: center; padding: 40px; color: #1a2530; background: #fff; }
+              .poster { border: 8px double #D4AF37; padding: 40px; border-radius: 12px; max-width: 500px; margin: 0 auto; }
+              h1 { font-size: 2.2rem; margin-bottom: 5px; color: #1a2530; }
+              h2 { font-size: 1.2rem; font-weight: normal; margin-bottom: 25px; color: #D4AF37; font-style: italic; }
+              .qr-code { width: 220px; height: 220px; margin: 20px auto; border: 2px solid #D4AF37; padding: 10px; border-radius: 8px; }
+              p { font-size: 1rem; line-height: 1.5; color: #555; }
+              .footer { font-size: 0.8rem; margin-top: 30px; color: #888; border-top: 1px solid #eee; padding-top: 15px; }
+            </style>
+          </head>
+          <body>
+            <div class="poster">
+              <h1>Wedding Invitation</h1>
+              <h2>Scan to View Digital Invitation & RSVP</h2>
+              <img class="qr-code" src="\${qrSrc}" alt="Wedding Card QR">
+              <p>Scan this QR code to view our wedding website, timeline, RSVP, and view live photo galleries.</p>
+              <div class="footer">Powered by Pixlora Studio QR Gallery</div>
+            </div>
+            <script>
+              window.onload = function() {
+                window.print();
+                setTimeout(function() { window.close(); }, 500);
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
     }
 
     // Theme Toggle Handler
