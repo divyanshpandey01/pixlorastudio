@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <title>Pixlora Studio — Instant AI-Powered Photo Delivery for Wedding Photographers</title>
   <meta name="description" content="Deliver event photos in seconds. Pixlora Studio gives wedding photographers instant, QR-code-driven digital galleries with AI face search and smart security." />
   <meta name="keywords" content="wedding photography, QR gallery, AI face search, digital photo delivery, event photography, photo sharing" />
@@ -635,7 +636,11 @@
     .footer-bottom a:hover { color: var(--gold); }
 
     /* ═══════════ GSAP ANIMATION HELPERS ═══════════ */
-    .gs-hidden { opacity: 0; transform: translateY(50px); }
+    .js-enabled .gs-hidden {
+      opacity: 0;
+      transform: translateY(50px);
+      will-change: opacity, transform;
+    }
 
     /* ═══════════ RESPONSIVE ═══════════ */
     @media (max-width: 1024px) {
@@ -1228,12 +1233,33 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
+  <script>
+    // Emergency Fallback: If GSAP CDN fails to load, reveal everything after a short timeout
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+          console.warn("GSAP CDN failed to load. Triggering emergency display fallback.");
+          document.documentElement.classList.remove('js-enabled');
+          document.querySelectorAll('.gs-hidden').forEach(el => el.classList.remove('gs-hidden'));
+          
+          // Immediately populate counter numbers
+          document.querySelectorAll('[data-count]').forEach(counter => {
+            counter.textContent = (counter.dataset.count || '') + (counter.dataset.suffix || '');
+          });
+        }
+      }, 300);
+    });
+  </script>
+
   <!-- ═══════════ APP SCRIPT ═══════════ -->
   <script type="module">
     import { db, isConfigured } from "./firebase-config.js";
     import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    gsap.registerPlugin(ScrollTrigger);
+    const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    if (hasGsap) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -1272,75 +1298,6 @@
         });
       });
 
-      // ─── GSAP SCROLL ANIMATIONS ───
-      // Hero
-      gsap.from('.hero-content.gs-hidden', {
-        y: 60, opacity: 0, duration: 1.2, delay: .3, ease: 'power3.out',
-        onComplete: function() { this.targets()[0].classList.remove('gs-hidden'); }
-      });
-      gsap.from('.hero-visual.gs-hidden', {
-        y: 40, opacity: 0, duration: 1.2, delay: .6, ease: 'power3.out',
-        onComplete: function() { this.targets()[0].classList.remove('gs-hidden'); }
-      });
-
-      // Generic fade-up for sections
-      gsap.utils.toArray('.gs-hidden').forEach(el => {
-        if (el.closest('.hero')) return; // skip hero (handled above)
-        gsap.from(el, {
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-          y: 50, opacity: 0, duration: .8, ease: 'power3.out',
-          onComplete: () => el.classList.remove('gs-hidden'),
-        });
-      });
-
-      // Stagger for bento cards
-      ScrollTrigger.create({
-        trigger: '.bento-grid',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          gsap.from('.bento-card', {
-            y: 40, opacity: 0, duration: .7, stagger: .15, ease: 'power3.out'
-          });
-        }
-      });
-
-      // Stagger for step cards
-      ScrollTrigger.create({
-        trigger: '.steps-track',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          gsap.from('.step-card', {
-            y: 40, opacity: 0, duration: .7, stagger: .12, ease: 'power3.out'
-          });
-        }
-      });
-
-      // Stagger for perfect-for cards
-      ScrollTrigger.create({
-        trigger: '.perfect-grid',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          gsap.from('.perfect-card', {
-            y: 30, opacity: 0, duration: .6, stagger: .1, ease: 'power3.out'
-          });
-        }
-      });
-
-      // Counter cards stagger
-      ScrollTrigger.create({
-        trigger: '.counters-grid',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          gsap.from('.counter-card', {
-            y: 30, opacity: 0, duration: .6, stagger: .15, ease: 'power3.out'
-          });
-        }
-      });
-
       // ─── COUNTER ANIMATION ───
       const animateCounters = () => {
         document.querySelectorAll('[data-count]').forEach(counter => {
@@ -1360,13 +1317,6 @@
           requestAnimationFrame(update);
         });
       };
-
-      ScrollTrigger.create({
-        trigger: '.counters-grid',
-        start: 'top 75%',
-        once: true,
-        onEnter: animateCounters
-      });
 
       // ─── AI DEMO AUTO-PLAY ───
       let demoInterval = null;
@@ -1395,12 +1345,124 @@
         }, 2500);
       };
 
-      ScrollTrigger.create({
-        trigger: '#ai-demo',
-        start: 'top 70%',
-        once: true,
-        onEnter: startDemo
-      });
+      // ─── GSAP SCROLL ANIMATIONS ───
+      if (hasGsap) {
+        // Hero Content
+        gsap.fromTo('.hero-content.gs-hidden', 
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, delay: .3, ease: 'power3.out',
+            onComplete: function() { this.targets()[0].classList.remove('gs-hidden'); }
+          }
+        );
+        
+        // Hero Visual Phone
+        gsap.fromTo('.hero-visual.gs-hidden', 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, delay: .6, ease: 'power3.out',
+            onComplete: function() { this.targets()[0].classList.remove('gs-hidden'); }
+          }
+        );
+
+        // Generic fade-up for sections (excluding staggered elements)
+        gsap.utils.toArray('.gs-hidden').forEach(el => {
+          if (el.closest('.hero')) return; // skip hero (handled above)
+          
+          // Skip elements that are handled by staggered group triggers
+          if (el.classList.contains('bento-card') || 
+              el.classList.contains('step-card') || 
+              el.classList.contains('perfect-card') || 
+              el.classList.contains('counter-card')) return;
+
+          gsap.fromTo(el,
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, duration: .8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+              onComplete: () => el.classList.remove('gs-hidden')
+            }
+          );
+        });
+
+        // Stagger for bento cards
+        ScrollTrigger.create({
+          trigger: '.bento-grid',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo('.bento-card', 
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: .7, stagger: .15, ease: 'power3.out',
+                onComplete: function() { this.targets().forEach(el => el.classList.remove('gs-hidden')); }
+              }
+            );
+          }
+        });
+
+        // Stagger for step cards
+        ScrollTrigger.create({
+          trigger: '.steps-track',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo('.step-card', 
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: .7, stagger: .12, ease: 'power3.out',
+                onComplete: function() { this.targets().forEach(el => el.classList.remove('gs-hidden')); }
+              }
+            );
+          }
+        });
+
+        // Stagger for perfect-for cards
+        ScrollTrigger.create({
+          trigger: '.perfect-grid',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo('.perfect-card', 
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: .6, stagger: .1, ease: 'power3.out',
+                onComplete: function() { this.targets().forEach(el => el.classList.remove('gs-hidden')); }
+              }
+            );
+          }
+        });
+
+        // Counter cards stagger
+        ScrollTrigger.create({
+          trigger: '.counters-grid',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo('.counter-card', 
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: .6, stagger: .15, ease: 'power3.out',
+                onComplete: function() { this.targets().forEach(el => el.classList.remove('gs-hidden')); }
+              }
+            );
+          }
+        });
+
+        // Count-up numbers trigger
+        ScrollTrigger.create({
+          trigger: '.counters-grid',
+          start: 'top 75%',
+          once: true,
+          onEnter: animateCounters
+        });
+
+        // AI demo auto-play trigger
+        ScrollTrigger.create({
+          trigger: '#ai-demo',
+          start: 'top 70%',
+          once: true,
+          onEnter: startDemo
+        });
+      } else {
+        // Safe fallback: immediately reveal all content
+        document.querySelectorAll('.gs-hidden').forEach(el => el.classList.remove('gs-hidden'));
+        animateCounters();
+        startDemo();
+      }
 
       // ─── HERO PARALLAX ───
       const heroVisual = document.querySelector('.hero-visual');
