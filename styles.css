@@ -289,7 +289,9 @@
     .bento-card {
       position: relative; background: var(--bg-glass); backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius-lg);
-      padding: var(--space-lg); transition: all .4s var(--ease-out); overflow: hidden;
+      padding: var(--space-lg); 
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s; 
+      overflow: hidden;
     }
     .bento-card::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
@@ -297,8 +299,12 @@
       opacity: 0; transition: opacity .4s;
     }
     .bento-card:hover {
-      transform: translateY(-4px); border-color: rgba(212,175,55,.15);
-      box-shadow: var(--shadow-md), 0 0 30px rgba(212,175,55,.08);
+      transform: translateY(-8px) scale(1.015); 
+      border-color: rgba(212, 175, 55, 0.45);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.35), 
+        0 0 30px rgba(212, 175, 55, 0.22),
+        0 0 10px rgba(212, 175, 55, 0.1);
     }
     .bento-card:hover::before { opacity: 1; }
     .bento-card:nth-child(1) { grid-column: span 2; } /* AI - hero card */
@@ -458,11 +464,13 @@
       text-align: center; padding: var(--space-lg); border-radius: var(--radius-lg);
       background: var(--bg-glass); backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,.05);
-      transition: all .4s var(--ease-out);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s;
     }
     .counter-card:hover {
-      border-color: rgba(212,175,55,.15); transform: translateY(-4px);
-      box-shadow: 0 0 30px rgba(212,175,55,.06);
+      border-color: rgba(212,175,55,0.3); transform: translateY(-6px) scale(1.015);
+      box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(212, 175, 55, 0.12);
     }
     .counter-num {
       font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 3.5rem);
@@ -479,11 +487,14 @@
       text-align: center; padding: var(--space-lg) var(--space-sm);
       border-radius: var(--radius-lg); background: var(--bg-glass);
       backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.05);
-      transition: all .4s var(--ease-out);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s;
     }
     .perfect-card:hover {
-      border-color: rgba(212,175,55,.2); transform: translateY(-6px);
-      box-shadow: var(--shadow-md), 0 0 30px rgba(212,175,55,.08);
+      border-color: rgba(212, 175, 55, 0.4); transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(212, 175, 55, 0.2),
+        0 0 12px rgba(212, 175, 55, 0.08);
     }
     .perfect-emoji { font-size: 2.5rem; margin-bottom: var(--space-sm); display: block; }
     .perfect-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .25rem; }
