@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "package.json",
+      "package-lock.json",
+      "rebuild.js",
+      "minify.js",
+      "crop-logo.js"
+    ],
+    "cleanUrls": true
+  }
+}

@@ -1,0 +1,155 @@
+import { db, isConfigured } from "./firebase-config.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ─── Navbar scroll effect ───
+  const navbar = document.querySelector('.navbar');
+  const handleScroll = () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  };
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  // ─── Mobile hamburger ───
+  const hamburger = document.querySelector('.hamburger');
+  const mobileNav = document.querySelector('.mobile-nav');
+
+  hamburger?.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+
+  // Close mobile nav on link click
+  mobileNav?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ─── Smooth scroll for anchor links ───
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        const offset = navbar.offsetHeight + 20;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ─── Scroll reveal animations ───
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // ─── Counter animation for stats ───
+  const animateCounters = () => {
+    document.querySelectorAll('[data-count]').forEach(counter => {
+      if (counter.dataset.animated) return;
+      const target = parseInt(counter.dataset.count, 10);
+      const suffix = counter.dataset.suffix || '';
+      const duration = 2000;
+      const start = performance.now();
+
+      const update = now => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        counter.textContent = Math.floor(target * eased) + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      };
+
+      counter.dataset.animated = 'true';
+      requestAnimationFrame(update);
+    });
+  };
+
+  const statsObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  const statsSection = document.querySelector('.hero-stats');
+  if (statsSection) statsObserver.observe(statsSection);
+
+  // ─── Form handling ───
+  const form = document.getElementById('lead-form');
+  form?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const studio = document.getElementById('studio').value;
+    const events = document.getElementById('events').value;
+
+    const btn = form.querySelector('.btn');
+    const original = btn.innerHTML;
+
+    if (!isConfigured) {
+      alert("Firebase is not configured yet. Please add your credentials inside firebase-config.js first.");
+      return;
+    }
+
+    btn.innerHTML = `Sending...`;
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '.8';
+
+    try {
+      await addDoc(collection(db, "leads"), {
+        name,
+        email,
+        studio,
+        eventsRange: events,
+        timestamp: serverTimestamp()
+      });
+
+      btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Request Sent!`;
+      
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.pointerEvents = '';
+        btn.style.opacity = '';
+        form.reset();
+      }, 3000);
+    } catch (error) {
+      console.error("Firebase Firestore Error:", error);
+      alert("Failed to submit request: " + error.message);
+      btn.innerHTML = original;
+      btn.style.pointerEvents = '';
+      btn.style.opacity = '';
+    }
+  });
+
+  // ─── Parallax subtle effect on hero ───
+  const heroVisual = document.querySelector('.hero-visual');
+  if (heroVisual && window.innerWidth > 768) {
+    window.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      heroVisual.style.transform = `translate(${x}px, ${y}px)`;
+    }, { passive: true });
+  }
+});
