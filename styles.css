@@ -23,10 +23,10 @@
       --space-xs: .5rem;
       --space-sm: 1rem;
       --space-md: 1.5rem;
-      --space-lg: 2.5rem;
-      --space-xl: 4rem;
-      --space-2xl: 6rem;
-      --space-3xl: 8rem;
+      --space-lg: 2.75rem;
+      --space-xl: 4.5rem;
+      --space-2xl: 7rem;
+      --space-3xl: 9.5rem;
       --radius-sm: .5rem;
       --radius-md: 1rem;
       --radius-lg: 1.5rem;
@@ -351,10 +351,11 @@
     }
     .bento-card {
       position: relative; background: var(--bg-glass); backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius-lg);
       padding: var(--space-lg); 
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s; 
       overflow: hidden;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 30px rgba(0,0,0,.15);
     }
     .bento-card::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
@@ -365,6 +366,7 @@
       transform: translateY(-8px) scale(1.015); 
       border-color: rgba(212, 175, 55, 0.45);
       box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.15),
         0 20px 40px rgba(0, 0, 0, 0.35), 
         0 0 30px rgba(212, 175, 55, 0.22),
         0 0 10px rgba(212, 175, 55, 0.1);
@@ -530,12 +532,14 @@
     .counter-card {
       text-align: center; padding: var(--space-lg); border-radius: var(--radius-lg);
       background: var(--bg-glass); backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.07);
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 30px rgba(0,0,0,.12);
     }
     .counter-card:hover {
       border-color: rgba(212,175,55,0.3); transform: translateY(-6px) scale(1.015);
       box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.12),
         0 15px 30px rgba(0, 0, 0, 0.3),
         0 0 25px rgba(212, 175, 55, 0.12);
     }
@@ -553,12 +557,14 @@
     .perfect-card {
       text-align: center; padding: var(--space-lg) var(--space-sm);
       border-radius: var(--radius-lg); background: var(--bg-glass);
-      backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.05);
+      backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.07);
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 30px rgba(0,0,0,.12);
     }
     .perfect-card:hover {
       border-color: rgba(212, 175, 55, 0.4); transform: translateY(-8px) scale(1.02);
       box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.12),
         0 20px 40px rgba(0, 0, 0, 0.35),
         0 0 35px rgba(212, 175, 55, 0.2),
         0 0 12px rgba(212, 175, 55, 0.08);
@@ -604,11 +610,12 @@
     .lead-gen { background: transparent; }
     .lead-gen-card {
       background: linear-gradient(135deg, rgba(36,51,69,.55), rgba(26,37,48,.75));
-      border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius-xl);
       padding: var(--space-2xl) var(--space-xl); display: grid;
       grid-template-columns: 1fr 1fr; gap: var(--space-xl);
       align-items: center; position: relative; overflow: hidden;
       backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), var(--shadow-lg);
     }
     .lead-gen-card::before {
       content: ''; position: absolute; top: -60px; right: -60px; width: 180px; height: 180px;
@@ -624,8 +631,9 @@
     .benefit-item .check svg { width: 11px; height: 11px; color: var(--gold); }
 
     .lead-form {
-      position: relative; background: rgba(26,37,48,.5); border: 1px solid rgba(255,255,255,.06);
+      position: relative; background: rgba(26,37,48,.5); border: 1px solid rgba(255,255,255,.07);
       border-radius: var(--radius-lg); padding: var(--space-lg);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06), var(--shadow-md);
     }
     .lead-form h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: var(--space-md); text-align: center; color: var(--white); }
     .form-group { margin-bottom: var(--space-sm); }
