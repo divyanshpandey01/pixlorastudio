@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>document.documentElement.classList.add('js-enabled');</script>
+  <title>Ajit & Subhashree — Wedding Gallery | Powered by Pixlora Studio</title>
+  <meta name="description" content="View the wedding gallery of Ajit and Subhashree. Relive the memories, find your photos using AI Face Search, and download in high resolution." />
+
+  <!-- Favicon: Golden camera shutter + P on navy -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A2530'/><circle cx='16' cy='16' r='11' stroke='%23D4AF37' stroke-width='2' fill='none'/><circle cx='16' cy='16' r='7' stroke='%23D4AF37' stroke-width='1.5' fill='none'/><circle cx='16' cy='16' r='3' fill='%23D4AF37'/><line x1='16' y1='3' x2='16' y2='6' stroke='%23D4AF37' stroke-width='1.5'/><line x1='16' y1='26' x2='16' y2='29' stroke='%23D4AF37' stroke-width='1.5'/><line x1='3' y1='16' x2='6' y2='16' stroke='%23D4AF37' stroke-width='1.5'/><line x1='26' y1='16' x2='29' y2='16' stroke='%23D4AF37' stroke-width='1.5'/><text x='16' y='18' text-anchor='middle' fill='%23D4AF37' font-family='serif' font-size='8' font-weight='bold'>P</text></svg>" type="image/svg+xml" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════ VARIABLES & RESET ═══════════ */
+    :root {
+      --navy: #1A2530;
+      --navy-light: #243345;
+      --navy-dark: #111a23;
+      --gold: #D4AF37;
+      --gold-light: #E8CC6E;
+      --gold-dark: #B8941F;
+      --gold-muted: rgba(212,175,55,.15);
+      --white: #FFFFFF;
+      --off-white: #F5F3EF;
+      --gray-100: #E8E6E1;
+      --gray-200: #C9C5BD;
+      --gray-300: #9E9A92;
+      --bg: var(--navy);
+      --bg-card: rgba(36,51,69,.45);
+      --bg-glass: rgba(36,51,69,.35);
+      --text: var(--off-white);
+      --text-muted: var(--gray-200);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.75rem;
+      --space-xl: 4.5rem;
+      --space-2xl: 7rem;
+      --space-3xl: 9.5rem;
+      --radius-sm: .5rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.5rem;
+      --radius-xl: 2rem;
+      --radius-full: 9999px;
+      --shadow-md: 0 8px 30px rgba(0,0,0,.25);
+      --shadow-lg: 0 16px 60px rgba(0,0,0,.35);
+      --shadow-glow: 0 0 40px rgba(212,175,55,.15);
+      --ease-out: cubic-bezier(.25,.46,.45,.94);
+      --container: 1200px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; font-family: inherit; background: none; }
+    
+    /* ═══════════ LAYOUT UTILITIES ═══════════ */
+    .container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 var(--space-md); position: relative; z-index: 1; }
+    .section-pad { padding: var(--space-2xl) 0; }
+    .gold-text { color: var(--gold); }
+    .text-center { text-align: center; }
+
+    /* ═══════════ HEADER / NAV ═══════════ */
+    .gallery-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 0; background: rgba(17, 26, 35, 0.4);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s var(--ease-out);
+    }
+    .gallery-nav.scrolled {
+      background: rgba(17, 26, 35, 0.85);
+      box-shadow: 0 4px 30px rgba(0,0,0,.2);
+      padding: 0.7rem 0;
+    }
+    .nav-wrap { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.1rem; }
+    .nav-logo .logo-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.25rem 0.6rem; border-radius: var(--radius-full);
+      border: 1px solid rgba(212, 175, 55, 0.25); background: rgba(212, 175, 55, 0.08);
+      color: var(--gold); font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .8rem 1.6rem; border-radius: var(--radius-full);
+      font-size: .88rem; font-weight: 600; letter-spacing: .02em;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--navy-dark); box-shadow: 0 4px 15px rgba(212,175,55,.2);
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px) scale(1.02); 
+      box-shadow: 0 8px 20px rgba(212,175,55,.35), 0 0 10px rgba(212,175,55,.15); 
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03); color: var(--white);
+      border: 1.5px solid rgba(255,255,255,.15);
+    }
+    .btn-outline:hover { 
+      background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.3); 
+      transform: translateY(-2px); 
+    }
+    .btn-outline:active { transform: translateY(0) scale(0.98); }
+
+    /* ═══════════ HERO COVER ═══════════ */
+    .gallery-hero {
+      position: relative; height: 75vh; min-height: 550px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; color: var(--white); overflow: hidden;
+    }
+    .hero-cover-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+    }
+    .hero-cover-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(26, 37, 48, 0.2) 0%, rgba(26, 37, 48, 0.6) 45%, var(--navy) 100%),
+                  radial-gradient(circle, transparent 40%, rgba(17, 26, 35, 0.8) 100%);
+    }
+    .hero-cover-content { position: relative; z-index: 1; max-width: 800px; padding: 0 var(--space-md); }
+    .hero-cover-overline {
+      font-size: .85rem; font-weight: 700; color: var(--gold);
+      letter-spacing: .15em; text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .hero-cover-title {
+      font-family: var(--font-serif); font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 700; line-height: 1.1; margin-bottom: 1rem;
+      letter-spacing: -0.01em; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    .hero-cover-date {
+      font-size: 1.1rem; font-weight: 500; color: var(--gray-100);
+      letter-spacing: 0.05em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .hero-cover-photographer {
+      font-size: 0.82rem; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* ═══════════ STATS BAR ═══════════ */
+    .stats-overlay-container {
+      margin-top: -50px; position: relative; z-index: 10;
+    }
+    .stats-card {
+      background: rgba(36, 51, 69, 0.45); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius-xl);
+      padding: 1.5rem var(--space-lg);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), var(--shadow-md);
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    }
+    .stat-item { text-align: center; border-right: 1px solid rgba(255, 255, 255, 0.05); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700;
+      color: var(--gold); line-height: 1.2; margin-bottom: 0.2rem;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--gray-200); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ═══════════ AI UPLOAD & FACE SEARCH ═══════════ */
+    .ai-search-sec { background: transparent; padding-top: var(--space-2xl); }
+    .ai-search-card {
+      background: linear-gradient(135deg, rgba(36,51,69,.55), rgba(26,37,48,.75));
+      border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius-xl);
+      padding: var(--space-lg); display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-lg); align-items: center;
+      box-shadow: inset 0 1px 1px rgba(255,255,255, 0.08), var(--shadow-md);
+      position: relative; overflow: hidden;
+    }
+    .ai-search-card::before {
+      content: ''; position: absolute; top: -60px; right: -60px; width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(212,175,55,.05), transparent 70%); border-radius: 50%;
+    }
+    .ai-upload-box {
+      border: 2px dashed rgba(212, 175, 55, 0.25); border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-md); text-align: center;
+      background: rgba(17, 26, 35, 0.3); transition: all 0.3s;
+      cursor: pointer; position: relative;
+    }
+    .ai-upload-box:hover {
+      border-color: var(--gold); background: rgba(212, 175, 55, 0.04);
+    }
+    .ai-upload-icon { font-size: 2.8rem; margin-bottom: 0.5rem; display: block; animation: floatIcon 4s ease-in-out infinite; }
+    @keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    
+    .ai-upload-title { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
+    .ai-upload-desc { font-size: 0.85rem; color: var(--gray-200); margin-bottom: var(--space-sm); }
+    .demo-trigger-wrap { display: flex; align-items: center; justify-content: center; gap: 0.6rem; }
+    .demo-avatar {
+      width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--gold);
+      object-fit: cover; cursor: pointer; transition: transform 0.3s;
+    }
+    .demo-avatar:hover { transform: scale(1.15) rotate(5deg); }
+    .demo-text-btn { font-size: 0.78rem; font-weight: 600; color: var(--gold); border-bottom: 1.5px dashed var(--gold); padding-bottom: 1px; cursor: pointer; }
+    .demo-text-btn:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+    .ai-guide-steps { display: flex; flex-direction: column; gap: 0.75rem; }
+    .guide-step { display: flex; align-items: center; gap: 0.75rem; font-size: 0.88rem; color: var(--gray-200); }
+    .guide-step .step-num {
+      width: 24px; height: 24px; min-width: 24px; border-radius: 50%;
+      background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: var(--gold);
+    }
+    
+    /* ═══════════ GALLERY FILTER BAR ═══════════ */
+    .filter-sticky-bar {
+      position: sticky; top: 62px; z-index: 90;
+      background: var(--navy); padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .filter-tabs {
+      display: flex; gap: 0.6rem; overflow-x: auto;
+      padding-bottom: 4px; scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab {
+      white-space: nowrap; padding: 0.5rem 1.15rem; border-radius: var(--radius-full);
+      font-size: 0.82rem; font-weight: 600; color: var(--gray-200);
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s;
+    }
+    .filter-tab:hover {
+      background: rgba(255, 255, 255, 0.06); color: var(--white);
+    }
+    .filter-tab.active {
+      background: var(--gold); color: var(--navy-dark); border-color: var(--gold);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+    }
+    .filter-tab.tab-fav.active {
+      background: #E57373; color: var(--white); border-color: #E57373;
+      box-shadow: 0 4px 12px rgba(229, 115, 115, 0.25);
+    }
+
+    /* ═══════════ GALLERY GRID (MASONRY) ═══════════ */
+    .gallery-grid-sec { background: transparent; padding-top: var(--space-sm); min-height: 500px; position: relative; }
+    .gallery-columns { display: flex; gap: 1.25rem; }
+    .gallery-column { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
+    
+    .gallery-card {
+      position: relative; border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--bg-glass); border: 1px solid rgba(255,255,255,.07);
+      box-shadow: inset 0 1px 1px rgba(255,255,255, 0.08), 0 4px 12px rgba(0,0,0,.15);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s;
+      cursor: pointer;
+    }
+    .gallery-card img {
+      width: 100%; height: auto; object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gallery-card:hover {
+      transform: translateY(-5px); border-color: rgba(212, 175, 55, 0.35);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.12), 0 15px 30px rgba(0,0,0,0.3), 0 0 15px rgba(212,175,55,0.12);
+    }
+    .gallery-card:hover img { transform: scale(1.035); }
+    
+    /* Overlay controls on card */
+    .card-overlay {
+      position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.65) 100%);
+      opacity: 0; transition: opacity 0.4s; display: flex; flex-direction: column; justify-content: space-between;
+      padding: 1rem; z-index: 2;
+    }
+    .gallery-card:hover .card-overlay { opacity: 1; }
+    .card-actions-top { display: flex; justify-content: flex-end; }
+    .card-action-btn {
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(17, 26, 35, 0.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15); display: flex; align-items: center; justify-content: center;
+      color: var(--white); transition: all 0.3s;
+    }
+    .card-action-btn:hover { transform: scale(1.1); color: var(--gold); border-color: var(--gold); }
+    .card-action-btn.fav-btn.active { color: #E57373; border-color: rgba(229, 115, 115, 0.5); background: rgba(229, 115, 115, 0.15); }
+    .card-action-btn.fav-btn.active:hover { color: #EF5350; }
+    
+    .card-info { color: var(--white); }
+    .card-cat-badge {
+      display: inline-block; padding: 0.15rem 0.5rem; border-radius: var(--radius-full);
+      background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold-light); font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══════════ AI SCANNER OVERLAY ═══════════ */
+    .scanner-overlay {
+      position: absolute; inset: 0; background: rgba(17, 26, 35, 0.88);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      z-index: 10; display: none; align-items: center; justify-content: center;
+      flex-direction: column; border-radius: var(--radius-xl);
+    }
+    .scanner-overlay.active { display: flex; }
+    .scanner-laser {
+      width: 80%; height: 3px; background: var(--gold); box-shadow: 0 0 15px var(--gold);
+      position: absolute; top: 0; animation: scanAnim 1.8s ease-in-out infinite;
+    }
+    @keyframes scanAnim {
+      0%, 100% { top: 10%; opacity: 0.1; }
+      50% { top: 90%; opacity: 1; }
+    }
+    .scanner-avatar-frame {
+      width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--gold);
+      position: relative; overflow: hidden; margin-bottom: 1.5rem;
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.25);
+    }
+    .scanner-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .scanner-text { font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); margin-bottom: 0.3rem; }
+    .scanner-sub { font-size: 0.85rem; color: var(--gray-200); }
+
+    /* Match Success Banner */
+    .match-banner {
+      background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: var(--shadow-md); animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .match-info-wrap { display: flex; align-items: center; gap: 0.75rem; }
+    .match-banner-avatar { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--gold); object-fit: cover; }
+    .match-title { font-weight: 700; color: var(--white); font-size: 0.95rem; }
+    .match-desc { font-size: 0.8rem; color: var(--gray-200); }
+    .match-reset-btn { font-size: 0.82rem; font-weight: 700; color: var(--gold); border-bottom: 1.5px solid var(--gold); cursor: pointer; padding-bottom: 1px; }
+
+    /* ═══════════ LIGHTBOX VIEWER ═══════════ */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(11, 16, 22, 0.96);
+      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      z-index: 1000; display: none; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.4s var(--ease-out);
+    }
+    .lightbox.open { display: flex; opacity: 1; }
+    .lightbox-content {
+      position: relative; max-width: 90vw; max-height: 85vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-img {
+      max-width: 100%; max-height: 85vh; object-fit: contain;
+      border-radius: var(--radius-sm); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      transition: transform 0.3s var(--ease-out);
+    }
+    
+    /* Lightbox controls */
+    .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.5rem; color: var(--gray-100); z-index: 1010; }
+    .lightbox-close:hover { color: var(--white); }
+    
+    .lightbox-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+      color: var(--gray-200); font-size: 1.2rem; cursor: pointer; transition: all 0.3s;
+      z-index: 1010;
+    }
+    .lightbox-arrow:hover { background: rgba(255,255,255,0.12); color: var(--white); border-color: var(--white); }
+    .lightbox-arrow.arrow-prev { left: -4rem; }
+    .lightbox-arrow.arrow-next { right: -4rem; }
+    
+    .lightbox-actions {
+      position: absolute; bottom: -3.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 1rem; z-index: 1010;
+    }
+    .lightbox-btn {
+      padding: 0.5rem 1.25rem; border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white); font-size: 0.8rem; font-weight: 600;
+      display: flex; align-items: center; gap: 0.4rem; transition: all 0.3s;
+    }
+    .lightbox-btn:hover { background: rgba(255,255,255,0.15); border-color: var(--white); }
+    .lightbox-btn.fav-btn.active { color: #E57373; border-color: rgba(229,115,115,0.4); background: rgba(229,115,115,0.12); }
+
+    /* ═══════════ GUEST EXPERIENCE STEPS ═══════════ */
+    .guest-exp-sec { background: rgba(17, 26, 35, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.03); border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+    .guest-exp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; position: relative; }
+    .guest-exp-grid::before {
+      content: ''; position: absolute; top: 40px; left: 12%; right: 12%; height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.15), transparent);
+    }
+    .exp-step-card { text-align: center; }
+    .exp-step-badge {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--bg-card);
+      border: 1.5px solid rgba(212,175,55,.2); display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-sm); font-size: 1.15rem; color: var(--gold);
+    }
+    .exp-step-title { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+    .exp-step-desc { font-size: 0.8rem; color: var(--gray-200); max-width: 180px; margin: 0 auto; }
+
+    /* ═══════════ FOOTER ═══════════ */
+    .gallery-footer {
+      border-top: 1px solid rgba(255,255,255,.04); padding: var(--space-lg) 0;
+      text-align: center; font-size: 0.78rem; color: var(--gray-300);
+      background: var(--navy-dark);
+    }
+    .gallery-footer a { color: var(--gold); border-bottom: 1.5px solid rgba(212,175,55,0.2); transition: border-color 0.3s; padding-bottom: 1px; }
+    .gallery-footer a:hover { border-color: var(--gold); }
+
+    /* Hidden before JS */
+    .gs-hidden { opacity: 0; transform: translateY(30px); }
+
+    /* ═══════════ RESPONSIVE SCALING ═══════════ */
+    @media (max-width: 1024px) {
+      .stats-card { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .stat-item { border-right: none; }
+      .stat-item:nth-child(odd) { border-right: 1px solid rgba(255, 255, 255, 0.05); }
+      .ai-search-card { grid-template-columns: 1fr; gap: var(--space-md); }
+      .lightbox-arrow.arrow-prev { left: 1rem; }
+      .lightbox-arrow.arrow-next { right: 1rem; }
+    }
+    @media (max-width: 768px) {
+      .gallery-columns { gap: 1rem; }
+      .gallery-column { gap: 1rem; }
+      .guest-exp-grid { grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+      .guest-exp-grid::before { display: none; }
+    }
+    @media (max-width: 580px) {
+      .gallery-hero { height: 60vh; min-height: 400px; }
+      .stats-card { grid-template-columns: 1fr; gap: 0.75rem; padding: 1rem var(--space-md); }
+      .stat-item { border-right: none !important; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.5rem; }
+      .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+      .gallery-columns { flex-direction: column; }
+      .lightbox-arrow { width: 38px; height: 38px; font-size: 1rem; }
+      .lightbox-actions { bottom: -4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden File Input for Selfie Simulation -->
+  <input type="file" id="selfie-file-input" accept="image/*" style="display: none;" />
+
+  <!-- ═══════════ NAVIGATION BAR ═══════════ -->
+  <nav class="gallery-nav" id="gallery-nav">
+    <div class="container nav-wrap">
+      <div class="nav-logo">
+        ✨ Ajit & Subhashree
+        <span class="logo-badge" id="qr-badge">⚡ QR Gallery</span>
+      </div>
+      <button class="btn btn-outline" id="btn-download-all">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Album
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════ HERO COVER ═══════════ -->
+  <header class="gallery-hero">
+    <div class="hero-cover-bg"></div>
+    <div class="hero-cover-content">
+      <p class="hero-cover-overline">Wedding Celebration</p>
+      <h1 class="hero-cover-title">Ajit Kumar <br class="mobile-only" /><span class="gold-text">❤️</span> Subhashree Sahu</h1>
+      <div class="hero-cover-date">
+        <span>📅 30 February 2027</span>
+        <span>📍 MomentCraft Studios</span>
+      </div>
+      <p class="hero-cover-photographer">Delivered in Premium High-Resolution</p>
+    </div>
+  </header>
+
+  <!-- ═══════════ STATS BAR OVERLAY ═══════════ -->
+  <div class="stats-overlay-container">
+    <div class="container">
+      <div class="stats-card">
+        <div class="stat-item">
+          <div class="stat-num">248</div>
+          <div class="stat-label">Photos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">150+</div>
+          <div class="stat-label">Guests</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">30 Feb '27</div>
+          <div class="stat-label">Event Date</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">MomentCraft</div>
+          <div class="stat-label">Studio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ AI UPLOAD & FACE SEARCH ═══════════ -->
+  <section class="ai-search-sec">
+    <div class="container">
+      <div class="ai-search-card">
+        <div class="ai-upload-box" id="ai-upload-box">
+          <span class="ai-upload-icon">🤳</span>
+          <h3 class="ai-upload-title">AI Face Search</h3>
+          <p class="ai-upload-desc">Upload a selfie and instantly find all your photos.</p>
+          
+          <div class="demo-trigger-wrap">
+            <span class="demo-text-btn" id="demo-selfie-btn">Try Demo Selfie</span>
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Demo Guest Face" class="demo-avatar" id="demo-avatar" />
+          </div>
+        </div>
+        
+        <div class="ai-guide-steps">
+          <div class="guide-step">
+            <span class="step-num">1</span>
+            <p><strong>Upload your selfie:</strong> We use local AI analysis to detect facial geometry.</p>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">2</span>
+            <p><strong>Private & Secure:</strong> Your face data is never saved, shared, or indexed.</p>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">3</span>
+            <p><strong>Tap & Save:</strong> Heart your favorites and download them in full resolution.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ GALLERY FILTER BAR ═══════════ -->
+  <div class="filter-sticky-bar" id="filter-bar">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Photos</button>
+        <button class="filter-tab" data-filter="pre-wedding">Pre Wedding</button>
+        <button class="filter-tab" data-filter="haldi">Haldi</button>
+        <button class="filter-tab" data-filter="mehendi">Mehendi</button>
+        <button class="filter-tab" data-filter="sangeet">Sangeet</button>
+        <button class="filter-tab" data-filter="wedding">Wedding</button>
+        <button class="filter-tab" data-filter="reception">Reception</button>
+        <button class="filter-tab tab-fav" data-filter="favorites" id="tab-fav">❤ Favorites (0)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ GALLERY GRID (MASONRY) ═══════════ -->
+  <section class="gallery-grid-sec">
+    <div class="container">
+
+      <!-- Match Banner (Visible on successful AI search) -->
+      <div class="match-banner" id="match-banner" style="display: none;">
+        <div class="match-info-wrap">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Selfie match" class="match-banner-avatar" id="match-avatar" />
+          <div>
+            <div class="match-title">AI Matching Successful</div>
+            <div class="match-desc" id="match-count-text">Found 4 photos of you!</div>
+          </div>
+        </div>
+        <span class="match-reset-btn" id="match-reset-btn">Reset Search</span>
+      </div>
+
+      <div class="gallery-columns" id="gallery-columns-grid">
+        <!-- 3 Columns for Masonry Grid -->
+        <div class="gallery-column"></div>
+        <div class="gallery-column"></div>
+        <div class="gallery-column"></div>
+      </div>
+
+      <!-- AI SCANNER OVERLAY -->
+      <div class="scanner-overlay" id="scanner-overlay">
+        <div class="scanner-laser"></div>
+        <div class="scanner-avatar-frame">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=250" alt="Face Scanned" id="scanner-avatar-img" />
+        </div>
+        <div class="scanner-text">AI Scanning Faces...</div>
+        <div class="scanner-sub">Finding matching wedding photos in under 2 seconds</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ GUEST EXPERIENCE STEPS ═══════════ -->
+  <section class="guest-exp-sec section-pad">
+    <div class="container">
+      <div class="guest-exp-grid">
+        <div class="exp-step-card">
+          <div class="exp-step-badge">📸</div>
+          <div class="exp-step-title">Scan QR</div>
+          <p class="exp-step-desc">Guests scan a unique QR code on tables</p>
+        </div>
+        <div class="exp-step-card">
+          <div class="exp-step-badge">🤳</div>
+          <div class="exp-step-title">Upload Selfie</div>
+          <p class="exp-step-desc">Provide a quick face key as search input</p>
+        </div>
+        <div class="exp-step-card">
+          <div class="exp-step-badge">🤖</div>
+          <div class="exp-step-title">AI Finds You</div>
+          <p class="exp-step-desc">Scans the event album in 2 seconds</p>
+        </div>
+        <div class="exp-step-card">
+          <div class="exp-step-badge">⚡</div>
+          <div class="exp-step-title">Relive Instantly</div>
+          <p class="exp-step-desc">Download matched photos in full resolution</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ LIGHTBOX VIEWER ═══════════ -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Fullscreen photo viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close viewer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    
+    <button class="lightbox-arrow arrow-prev" id="lightbox-prev" aria-label="Previous photo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    
+    <div class="lightbox-content">
+      <img src="" alt="Fullscreen preview" class="lightbox-img" id="lightbox-img" />
+    </div>
+    
+    <button class="lightbox-arrow arrow-next" id="lightbox-next" aria-label="Next photo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    
+    <div class="lightbox-actions">
+      <button class="lightbox-btn fav-btn" id="lightbox-fav-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Favorite</span>
+      </button>
+      <button class="lightbox-btn" id="lightbox-dl-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="gallery-footer">
+    <div class="container">
+      Accessed via Pixlora QR Gallery &middot; Powered by <a href="index.html">Pixlora Studio</a>
+    </div>
+  </footer>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script type="module">
+    // ═══════════ EVENT PHOTOS DATASET ═══════════
+    const photos = [
+      {
+        id: 1,
+        url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800",
+        category: "pre-wedding",
+        caption: "A romantic walk during pre-wedding shoot",
+        isGuestMatch: true // Tagged as face match for demo guest
+      },
+      {
+        id: 2,
+        url: "https://images.unsplash.com/photo-1519225495810-7517c24a2ed7?auto=format&fit=crop&q=80&w=800",
+        category: "pre-wedding",
+        caption: "Sunlit moments together"
+      },
+      {
+        id: 3,
+        url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800",
+        category: "pre-wedding",
+        caption: "Promise of a lifetime"
+      },
+      {
+        id: 4,
+        url: "https://images.unsplash.com/photo-1615966661401-89133ad77402?auto=format&fit=crop&q=80&w=800",
+        category: "haldi",
+        caption: "Golden marigolds celebrating Haldi ceremony"
+      },
+      {
+        id: 5,
+        url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800",
+        category: "haldi",
+        caption: "A traditional marigold setup"
+      },
+      {
+        id: 6,
+        url: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800",
+        category: "mehendi",
+        caption: "Intricate bridal henna detailing"
+      },
+      {
+        id: 7,
+        url: "https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?auto=format&fit=crop&q=80&w=800",
+        category: "mehendi",
+        caption: "Henna designs painted on hands"
+      },
+      {
+        id: 8,
+        url: "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=800",
+        category: "sangeet",
+        caption: "Family dances under the colorful spotlights",
+        isGuestMatch: true
+      },
+      {
+        id: 9,
+        url: "https://images.unsplash.com/photo-1507504038482-7621434c3cf9?auto=format&fit=crop&q=80&w=800",
+        category: "sangeet",
+        caption: "Dancing on the stage floor"
+      },
+      {
+        id: 10,
+        url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800",
+        category: "wedding",
+        caption: "Rings exchange under the mandap lights"
+      },
+      {
+        id: 11,
+        url: "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?auto=format&fit=crop&q=80&w=800",
+        category: "wedding",
+        caption: "Throwing rice during fire rituals",
+        isGuestMatch: true
+      },
+      {
+        id: 12,
+        url: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=800",
+        category: "reception",
+        caption: "Elegant tables set for the wedding dinner"
+      },
+      {
+        id: 13,
+        url: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&q=80&w=800",
+        category: "reception",
+        caption: "Grand toast to the newlyweds",
+        isGuestMatch: true
+      }
+    ];
+
+    // Local state
+    let favorites = JSON.parse(localStorage.getItem('pixlora_favs')) || [];
+    let currentFilter = 'all';
+    let isAiFiltered = false;
+    let activePhotos = [...photos];
+    let lightboxIndex = 0;
+
+    const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    if (hasGsap) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup elements
+      const navbar = document.getElementById('gallery-nav');
+      const uploadBox = document.getElementById('ai-upload-box');
+      const fileInput = document.getElementById('selfie-file-input');
+      const demoBtn = document.getElementById('demo-selfie-btn');
+      const demoAvatar = document.getElementById('demo-avatar');
+      const scannerOverlay = document.getElementById('scanner-overlay');
+      const scannerAvatarImg = document.getElementById('scanner-avatar-img');
+      const matchBanner = document.getElementById('match-banner');
+      const matchAvatar = document.getElementById('match-avatar');
+      const matchReset = document.getElementById('match-reset-btn');
+      const matchCountText = document.getElementById('match-count-text');
+      const tabFav = document.getElementById('tab-fav');
+
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      const lightboxFav = document.getElementById('lightbox-fav-btn');
+      const lightboxDl = document.getElementById('lightbox-dl-btn');
+      const dlAllBtn = document.getElementById('btn-download-all');
+
+      // Update counters
+      const updateFavCount = () => {
+        tabFav.textContent = `❤ Favorites (${favorites.length})`;
+      };
+      updateFavCount();
+
+      // ─── NAV SCROLL ───
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+
+      // ─── FAVORITES TOGGLE FUNCTION ───
+      const toggleFavorite = (id, event) => {
+        if (event) event.stopPropagation();
+        
+        const idx = favorites.indexOf(id);
+        if (idx > -1) {
+          favorites.splice(idx, 1);
+        } else {
+          favorites.push(id);
+        }
+        localStorage.setItem('pixlora_favs', JSON.stringify(favorites));
+        
+        updateFavCount();
+        
+        // Refresh grid if current filter is favorites
+        if (currentFilter === 'favorites') {
+          filterGallery();
+        } else {
+          // Just update current active buttons on the page
+          document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
+            btn.classList.toggle('active', favorites.includes(id));
+          });
+        }
+      };
+
+      // ─── CARD CREATION ───
+      const createCard = (item) => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.setAttribute('data-id', item.id);
+        
+        const isFav = favorites.includes(item.id);
+        
+        card.innerHTML = `
+          <img src="${item.url}" alt="${item.caption}" loading="lazy" />
+          <div class="card-overlay">
+            <div class="card-actions-top">
+              <button class="card-action-btn fav-btn ${isFav ? 'active' : ''}" data-id="${item.id}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="card-info">
+              <span class="card-cat-badge">${item.category.replace('-', ' ')}</span>
+            </div>
+          </div>
+        `;
+        
+        card.querySelector('.fav-btn').addEventListener('click', (e) => toggleFavorite(item.id, e));
+        card.addEventListener('click', () => openLightbox(item.id));
+        
+        return card;
+      };
+
+      // ─── GALLERY RENDERING & FILTERING ───
+      const filterGallery = () => {
+        let list = [...photos];
+        
+        // Apply AI filter first
+        if (isAiFiltered) {
+          list = list.filter(p => p.isGuestMatch);
+        }
+        
+        // Apply category filter
+        if (currentFilter !== 'all') {
+          if (currentFilter === 'favorites') {
+            list = list.filter(p => favorites.includes(p.id));
+          } else {
+            list = list.filter(p => p.category === currentFilter);
+          }
+        }
+        
+        activePhotos = list;
+        
+        // Render columns (3-columns flex masonry)
+        const columns = document.querySelectorAll('.gallery-column');
+        columns.forEach(col => col.innerHTML = '');
+        
+        if (list.length === 0) {
+          columns[1].innerHTML = `<div style="grid-column: span 3; text-align: center; color: var(--gray-300); padding: 4rem 0;">No matching photos found.</div>`;
+          return;
+        }
+
+        list.forEach((item, index) => {
+          const colIndex = index % columns.length;
+          const card = createCard(item);
+          columns[colIndex].appendChild(card);
+        });
+
+        // Trigger GSAP fade-in reflow
+        if (hasGsap) {
+          gsap.fromTo('.gallery-card', 
+            { opacity: 0, y: 15 },
+            { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }
+          );
+        }
+      };
+
+      // Initial filter
+      filterGallery();
+
+      // Filter tabs event listeners
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.getAttribute('data-filter');
+          filterGallery();
+        });
+      });
+
+      // ─── AI FACE SEARCH SIMULATION ───
+      const runFaceSearchSimulation = (avatarUrl) => {
+        // Set scanner image
+        scannerAvatarImg.src = avatarUrl;
+        scannerOverlay.classList.add('active');
+        
+        // Trigger scanning overlay animation
+        setTimeout(() => {
+          scannerOverlay.classList.remove('active');
+          isAiFiltered = true;
+          
+          // Setup success banner
+          matchAvatar.src = avatarUrl;
+          matchBanner.style.display = 'flex';
+          const matchedCount = photos.filter(p => p.isGuestMatch).length;
+          matchCountText.textContent = `Found ${matchedCount} photos of you! Showing results.`;
+          
+          // Redraw gallery
+          filterGallery();
+          
+          // Scroll to filter results
+          document.getElementById('filter-bar').scrollIntoView({ behavior: 'smooth' });
+        }, 1800);
+      };
+
+      // Trigger upload via box click
+      uploadBox.addEventListener('click', (e) => {
+        // Prevent click if demo avatars clicked
+        if (e.target.closest('#demo-selfie-btn') || e.target.closest('#demo-avatar')) return;
+        fileInput.click();
+      });
+
+      // File input change
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            runFaceSearchSimulation(event.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Demo buttons click
+      const handleDemoTrigger = () => {
+        const demoFaceUrl = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=350";
+        runFaceSearchSimulation(demoFaceUrl);
+      };
+      demoBtn.addEventListener('click', handleDemoTrigger);
+      demoAvatar.addEventListener('click', handleDemoTrigger);
+
+      // Reset AI Search
+      const resetSearch = () => {
+        isAiFiltered = false;
+        matchBanner.style.display = 'none';
+        filterGallery();
+      };
+      matchReset.addEventListener('click', resetSearch);
+
+      // ─── LIGHTBOX VIEWER ───
+      const openLightbox = (id) => {
+        const idx = activePhotos.findIndex(p => p.id === id);
+        if (idx === -1) return;
+        
+        lightboxIndex = idx;
+        const photo = activePhotos[lightboxIndex];
+        
+        lightboxImg.src = photo.url;
+        lightboxImg.alt = photo.caption;
+        
+        // Update Favorite State inside Lightbox
+        lightboxFav.classList.toggle('active', favorites.includes(photo.id));
+        lightboxFav.setAttribute('data-id', photo.id);
+        
+        // Display Lightbox
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      const navigateLightbox = (direction) => {
+        lightboxIndex = (lightboxIndex + direction + activePhotos.length) % activePhotos.length;
+        const photo = activePhotos[lightboxIndex];
+        
+        // Smooth slide crossfade
+        if (hasGsap) {
+          gsap.fromTo(lightboxImg, 
+            { opacity: 0.6, scale: 0.98 },
+            { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }
+          );
+        }
+        
+        lightboxImg.src = photo.url;
+        lightboxImg.alt = photo.caption;
+        lightboxFav.classList.toggle('active', favorites.includes(photo.id));
+        lightboxFav.setAttribute('data-id', photo.id);
+      };
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
+      lightboxNext.addEventListener('click', () => navigateLightbox(1));
+      
+      // Lightbox actions
+      lightboxFav.addEventListener('click', () => {
+        const photoId = activePhotos[lightboxIndex].id;
+        toggleFavorite(photoId);
+        lightboxFav.classList.toggle('active', favorites.includes(photoId));
+      });
+
+      const downloadUrl = (url, filename) => {
+        const a = document.createElement('a');
+        a.href = url + "&dl=wedding_photo.jpg";
+        a.target = '_blank';
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      lightboxDl.addEventListener('click', () => {
+        const photo = activePhotos[lightboxIndex];
+        downloadUrl(photo.url, `ajit_subhashree_wedding_${photo.id}.jpg`);
+      });
+
+      // Download all favorites/album
+      dlAllBtn.addEventListener('click', () => {
+        alert("Preparing zip file download for all 248 high-resolution wedding photos...");
+        downloadUrl("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1200", "Ajit_Subhashree_Full_Album.zip");
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        if (e.key === 'ArrowRight') navigateLightbox(1);
+      });
+
+      // Swipe navigation for mobile
+      let touchStartX = 0;
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      lightbox.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          navigateLightbox(diff > 0 ? -1 : 1);
+        }
+      }, { passive: true });
+
+      // Close lightbox on backdrop click
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === lightbox.querySelector('.lightbox-content')) {
+          closeLightbox();
+        }
+      });
+
+      // ─── GSAP ENTRANCE ANIMATIONS ───
+      if (hasGsap) {
+        // Hero entrance fade
+        gsap.fromTo('.hero-cover-content', 
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out' }
+        );
+
+        // Stats card fade-up on scroll
+        gsap.fromTo('.stats-card', 
+          { opacity: 0, y: 35 },
+          { opacity: 1, y: 0, duration: 1.2, delay: 0.2, ease: 'power3.out' }
+        );
+
+        // Scroll reveals for sections
+        gsap.utils.toArray('.gs-hidden').forEach(el => {
+          gsap.fromTo(el,
+            { opacity: 0, y: 35 },
+            { 
+              opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+              onComplete: () => el.classList.remove('gs-hidden')
+            }
+          );
+        });
+
+        // Stagger reveal for guest experience cards
+        ScrollTrigger.create({
+          trigger: '.guest-exp-grid',
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo('.exp-step-card', 
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power3.out' }
+            );
+          }
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>
