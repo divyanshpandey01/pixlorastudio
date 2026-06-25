@@ -469,6 +469,12 @@
         <span>📍 MomentCraft Studios</span>
       </div>
       <p class="hero-cover-photographer">Delivered in Premium High-Resolution</p>
+      
+      <!-- Guest Action Flow CTAs -->
+      <div class="hero-cover-ctas" style="margin-top: 1.75rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="hero-view-photos-btn">View Photos</button>
+        <button class="btn btn-outline" id="hero-find-me-btn">Find My Photos 🤳</button>
+      </div>
     </div>
   </header>
 
@@ -495,39 +501,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ═══════════ AI UPLOAD & FACE SEARCH ═══════════ -->
-  <section class="ai-search-sec">
-    <div class="container">
-      <div class="ai-search-card">
-        <div class="ai-upload-box" id="ai-upload-box">
-          <span class="ai-upload-icon">🤳</span>
-          <h3 class="ai-upload-title">AI Face Search</h3>
-          <p class="ai-upload-desc">Upload a selfie and instantly find all your photos.</p>
-          
-          <div class="demo-trigger-wrap">
-            <span class="demo-text-btn" id="demo-selfie-btn">Try Demo Selfie</span>
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Demo Guest Face" class="demo-avatar" id="demo-avatar" />
-          </div>
-        </div>
-        
-        <div class="ai-guide-steps">
-          <div class="guide-step">
-            <span class="step-num">1</span>
-            <p><strong>Upload your selfie:</strong> We use local AI analysis to detect facial geometry.</p>
-          </div>
-          <div class="guide-step">
-            <span class="step-num">2</span>
-            <p><strong>Private & Secure:</strong> Your face data is never saved, shared, or indexed.</p>
-          </div>
-          <div class="guide-step">
-            <span class="step-num">3</span>
-            <p><strong>Tap & Save:</strong> Heart your favorites and download them in full resolution.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ═══════════ GALLERY FILTER BAR ═══════════ -->
   <div class="filter-sticky-bar" id="filter-bar">
@@ -578,6 +551,39 @@
         <div class="scanner-sub">Finding matching wedding photos in under 2 seconds</div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ═══════════ AI UPLOAD & FACE SEARCH ═══════════ -->
+  <section class="ai-search-sec" id="ai-search-sec">
+    <div class="container">
+      <div class="ai-search-card">
+        <div class="ai-upload-box" id="ai-upload-box">
+          <span class="ai-upload-icon">🤳</span>
+          <h3 class="ai-upload-title">AI Face Search</h3>
+          <p class="ai-upload-desc">Upload a selfie and instantly find all your photos.</p>
+          
+          <div class="demo-trigger-wrap">
+            <span class="demo-text-btn" id="demo-selfie-btn">Try Demo Selfie</span>
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Demo Guest Face" class="demo-avatar" id="demo-avatar" />
+          </div>
+        </div>
+        
+        <div class="ai-guide-steps">
+          <div class="guide-step">
+            <span class="step-num">1</span>
+            <p><strong>Upload your selfie:</strong> We use local AI analysis to detect facial geometry.</p>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">2</span>
+            <p><strong>Private & Secure:</strong> Your face data is never saved, shared, or indexed.</p>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">3</span>
+            <p><strong>Tap & Save:</strong> Heart your favorites and download them in full resolution.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -778,6 +784,21 @@
         tabFav.textContent = `❤ Favorites (${favorites.length})`;
       };
       updateFavCount();
+
+      // ─── HERO COVER ACTIONS ───
+      const heroViewBtn = document.getElementById('hero-view-photos-btn');
+      const heroFindMeBtn = document.getElementById('hero-find-me-btn');
+      
+      if (heroViewBtn) {
+        heroViewBtn.addEventListener('click', () => {
+          document.getElementById('filter-bar').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+      if (heroFindMeBtn) {
+        heroFindMeBtn.addEventListener('click', () => {
+          document.getElementById('ai-search-sec').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
 
       // ─── NAV SCROLL ───
       window.addEventListener('scroll', () => {
