@@ -157,6 +157,18 @@ import { db, isConfigured } from "./firebase-config.js";
           }
         });
 
+        // Animate connecting line on scroll
+        gsap.to('.steps-line', {
+          scaleX: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.steps-track',
+            start: 'top 70%',
+            end: 'bottom 60%',
+            scrub: true
+          }
+        });
+
         // Stagger for perfect-for cards
         ScrollTrigger.create({
           trigger: '.perfect-grid',
