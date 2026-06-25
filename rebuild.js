@@ -39,7 +39,7 @@ let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 html = html.replace(/<style>[\s\S]*?<\/style>/, `<style>${cssMin}</style>`);
 
 // Replace script block
-html = html.replace(/<script(?: type="module")?>[\s\S]*?<\/script>/, `<script type="module">${jsMin}</script>`);
+html = html.replace(/<script type="module">[\s\S]*?<\/script>/, `<script type="module">${jsMin}</script>`);
 
 fs.writeFileSync(path.join(__dirname, 'index.html'), html, 'utf8');
 console.log('Build completed successfully!');
