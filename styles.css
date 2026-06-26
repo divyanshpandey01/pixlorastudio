@@ -158,17 +158,28 @@
     .nav-login-btn {
       font-size: 0.85rem;
       padding: 0.55rem 1.25rem;
-      border-color: rgba(212, 175, 55, 0.4);
-      color: var(--gold);
+      background: linear-gradient(135deg, #FF007A, #7928CA, #00DFD8, #FF007A);
+      background-size: 300% 300%;
+      animation: colorfulGrad 6s ease infinite;
+      color: #FFFFFF !important;
+      border: none;
       border-radius: 9999px;
       font-weight: 600;
+      box-shadow: 0 4px 15px rgba(121, 40, 202, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .nav-login-btn:hover {
-      background: rgba(212, 175, 55, 0.08);
-      border-color: var(--gold);
-      color: var(--gold-light);
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+      transform: translateY(-2px) scale(1.04);
+      color: #FFFFFF !important;
+      box-shadow: 0 8px 25px rgba(121, 40, 202, 0.6), 0 0 15px rgba(0, 223, 216, 0.3);
     }
+
+    @keyframes colorfulGrad {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
 
 
     /* ═══════════ NAVBAR ═══════════ */
