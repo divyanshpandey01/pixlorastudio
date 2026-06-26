@@ -802,6 +802,11 @@
       transform: scale(1.05);
     }
     .theme-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+    .sun-icon { display: none; }
+    .moon-icon { display: block; }
+    body.light-theme .sun-icon { display: block; }
+    body.light-theme .moon-icon { display: none; }
+
 
     /* Light Theme Variables */
     body.light-theme {
@@ -895,4 +900,44 @@
     }
     body.light-theme .nav-links a.active::after {
       width: 100%;
+    }
+
+    /* Light Theme Button & Card Contrast Refinements */
+    body.light-theme .btn-primary {
+      color: #111A23;
+    }
+    body.light-theme .btn-outline {
+      border-color: rgba(17, 26, 35, 0.15);
+      color: #111A23;
+    }
+    body.light-theme .btn-outline:hover {
+      background: rgba(17, 26, 35, 0.04);
+      border-color: rgba(17, 26, 35, 0.3);
+    }
+    body.light-theme .bento-card,
+    body.light-theme .step-card,
+    body.light-theme .counter-card,
+    body.light-theme .perfect-card,
+    body.light-theme .lead-gen-card {
+      border-color: rgba(17, 26, 35, 0.08);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), var(--shadow-sm);
+    }
+    body.light-theme .lead-form {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(17, 26, 35, 0.08);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), var(--shadow-md);
+    }
+    body.light-theme .footer {
+      border-top-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .footer-social {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-theme .footer-social svg {
+      color: #374151;
+    }
+    body.light-theme .footer-social:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.2);
     }
