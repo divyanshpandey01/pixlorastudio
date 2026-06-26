@@ -1608,8 +1608,39 @@
   </div>
 
 
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <!-- ═══════════ JAVASCRIPT STATE & INTERACTIONS ═══════════ -->
   <script>
+    // Firebase Configuration Backend integration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwyaDT7wopOIZuIy1GEumZ_AVoGCFNVLE",
+      authDomain: "pixlorastudio-66200.firebaseapp.com",
+      projectId: "pixlorastudio-66200",
+      storageBucket: "pixlorastudio-66200.firebasestorage.app",
+      messagingSenderId: "842423492677",
+      appId: "1:842423492677:web:fb059401b34421a0c4832c",
+      measurementId: "G-0XGXDPQGG6"
+    };
+
+    let db = null;
+    let isFirebaseAvailable = false;
+    try {
+      if (typeof firebase !== 'undefined') {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+        isFirebaseAvailable = true;
+        console.log("Firebase initialized correctly.");
+        console.log("Firestore instance created correctly.");
+      }
+    } catch (e) {
+      console.error("Firebase/Firestore initialization failed:", e);
+    }
+
     // 1. Initial Mock Database
     let eventsDatabase = [
       {
@@ -1674,19 +1705,47 @@
     window.addEventListener("DOMContentLoaded", () => {
       // 1. Pull user info from firebase status or localStorage (Simulated)
       initUserData();
-      // 2. Render Events Table
-      renderEventsTable();
-      // 3. Populate Selection Lists
-      populateEventSelectors();
-      // 4. Init Checkbox event listeners
+      // 2. Load Events from Firestore
+      loadEventsFromFirestore();
+      // 3. Init Checkbox event listeners
       initCheckboxPills();
-      // 5. Render Analytics Charts for first event
-      renderAnalyticsChart("event-1");
-      // 6. Render Downloads Log
+      // 4. Render Downloads Log
       renderDownloadLogs();
-      // 7. Update overview stats values
-      updateOverviewStats();
     });
+
+    async function loadEventsFromFirestore() {
+      if (isFirebaseAvailable && db) {
+        try {
+          const snapshot = await db.collection("events").orderBy("createdAt", "desc").get();
+          if (!snapshot.empty) {
+            const fbEvents = [];
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              fbEvents.push({
+                id: doc.id,
+                eventId: doc.id,
+                ...data
+              });
+            });
+            eventsDatabase = fbEvents;
+            console.log(`Loaded ${eventsDatabase.length} events from Firestore.`);
+          } else {
+            console.log("Firestore events collection is empty.");
+          }
+        } catch (err) {
+          console.error("Failed to load events from Firestore:", err);
+        }
+      }
+      
+      // Render Table, Populate Selectors, and update overview stats
+      renderEventsTable();
+      populateEventSelectors();
+      updateOverviewStats();
+      
+      if (eventsDatabase.length > 0) {
+        renderAnalyticsChart(eventsDatabase[0].id);
+      }
+    }
 
     // Simulated User Data Init
     function initUserData() {
@@ -1914,7 +1973,7 @@
       });
     }
 
-    function handleCreateEvent(event) {
+    async function handleCreateEvent(event) {
       event.preventDefault();
       
       const couple1 = document.getElementById("eventCouple1").value;
@@ -1937,25 +1996,57 @@
       }
 
       // Add to database
-      const newId = "event-" + (eventsDatabase.length + 1);
+      let eventId = "event-" + (eventsDatabase.length + 1);
+      if (isFirebaseAvailable && db) {
+        try {
+          const docRef = db.collection("events").doc();
+          eventId = docRef.id;
+        } catch (e) {
+          console.error("Error pre-generating doc ID:", e);
+        }
+      }
+
       const newEvent = {
-        id: newId,
-        couple1, couple2, type, date, location, photographer, coverUrl, categories,
+        id: eventId,
+        eventId: eventId,
+        eventName: `${couple1} & ${couple2} - ${type}`,
+        coupleNames: `${couple1} & ${couple2}`,
+        couple1,
+        couple2,
+        type,
+        date,
+        location,
+        photographer,
+        coverUrl,
+        categories,
         status: "live",
         photosCount: 0,
         viewsCount: 0,
-        weeklyViews: [0, 0, 0, 0, 0, 0, 0]
+        weeklyViews: [0, 0, 0, 0, 0, 0, 0],
+        createdAt: isFirebaseAvailable && typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
       };
 
-      eventsDatabase.unshift(newEvent); // Add to beginning of database
+      if (isFirebaseAvailable && db) {
+        try {
+          console.log("Saving event to Firestore...", newEvent);
+          await db.collection("events").doc(eventId).set(newEvent);
+          console.log("Firestore event document created successfully! Document ID:", eventId);
+          eventsDatabase.unshift(newEvent);
+          showNotificationToast("Live Event Created", `Gallery portal for ${couple1} & ${couple2} is now active.`);
+        } catch (err) {
+          console.error("Firestore Save Failed! Complete Firebase Error:", err);
+          alert("Firebase Error: " + err.message);
+          return;
+        }
+      } else {
+        eventsDatabase.unshift(newEvent);
+        showNotificationToast("Event Saved Locally", `Saved locally (offline mode).`);
+      }
       
       // Update visuals
       renderEventsTable();
       populateEventSelectors();
       updateOverviewStats();
-      
-      // Success Notification
-      showNotificationToast("Live Event Created", `Gallery portal for ${couple1} & ${couple2} is now active.`);
       
       // Reset form
       resetCreateEventForm();
