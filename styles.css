@@ -155,6 +155,22 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
+    .nav-login-btn {
+      font-size: 0.85rem;
+      padding: 0.55rem 1.25rem;
+      border-color: rgba(212, 175, 55, 0.4);
+      color: var(--gold);
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+    .nav-login-btn:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: var(--gold);
+      color: var(--gold-light);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    }
+
+
     /* ═══════════ NAVBAR ═══════════ */
     .navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -731,7 +747,7 @@
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .nav-cta.desktop { display: none; }
+      .nav-cta.desktop, .nav-login-btn.desktop { display: none; }
       .hamburger { display: flex; }
       .section-pad { padding: var(--space-2xl) 0; }
       .bento-grid { grid-template-columns: 1fr; }
