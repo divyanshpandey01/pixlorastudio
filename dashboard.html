@@ -1711,6 +1711,27 @@
       initCheckboxPills();
       // 4. Render Downloads Log
       renderDownloadLogs();
+
+      // Debug: Verify "Create Live Event" form listener
+      const form = document.getElementById("createEventForm");
+      if (form) {
+        console.log("Debug: Found createEventForm element. Attaching submit logger...");
+        form.addEventListener("submit", (e) => {
+          console.log("Debug: Form submit event triggered via listener.");
+        });
+      } else {
+        console.error("Debug: createEventForm element not found in DOM!");
+      }
+
+      const submitBtn = document.querySelector("#createEventForm button[type='submit']");
+      if (submitBtn) {
+        console.log("Debug: Found Create Live Event submit button. Attaching click listener...");
+        submitBtn.addEventListener("click", () => {
+          console.log("Debug: Create Live Event button clicked.");
+        });
+      } else {
+        console.error("Debug: Create Live Event submit button not found in DOM!");
+      }
     });
 
     async function loadEventsFromFirestore() {
@@ -1974,8 +1995,10 @@
     }
 
     async function handleCreateEvent(event) {
+      console.log("Create Live Event: Form submit function executed. (Button clicked)");
       event.preventDefault();
       
+      console.log("Create Live Event: Validation started.");
       const couple1 = document.getElementById("eventCouple1").value;
       const couple2 = document.getElementById("eventCouple2").value;
       const type = document.getElementById("eventType").value;
@@ -1991,18 +2014,24 @@
       });
 
       if (categories.length === 0) {
+        console.error("Create Live Event: Validation failed - No categories selected.");
         alert("Please select at least one gallery category.");
         return;
       }
+      console.log("Create Live Event: Validation passed.");
 
       // Add to database
+      console.log("Create Live Event: Firebase initialized status:", isFirebaseAvailable);
+      console.log("Create Live Event: Firestore instance created status:", db ? true : false);
+
       let eventId = "event-" + (eventsDatabase.length + 1);
       if (isFirebaseAvailable && db) {
         try {
           const docRef = db.collection("events").doc();
           eventId = docRef.id;
+          console.log("Create Live Event: Pre-generated Firestore document ID:", eventId);
         } catch (e) {
-          console.error("Error pre-generating doc ID:", e);
+          console.error("Create Live Event: Error pre-generating doc ID:", e);
         }
       }
 
@@ -2028,17 +2057,18 @@
 
       if (isFirebaseAvailable && db) {
         try {
-          console.log("Saving event to Firestore...", newEvent);
+          console.log("Create Live Event: addDoc() / setDoc() called for events collection with ID:", eventId, newEvent);
           await db.collection("events").doc(eventId).set(newEvent);
-          console.log("Firestore event document created successfully! Document ID:", eventId);
+          console.log("Create Live Event: Success - Firestore event document created successfully! Document ID:", eventId);
           eventsDatabase.unshift(newEvent);
           showNotificationToast("Live Event Created", `Gallery portal for ${couple1} & ${couple2} is now active.`);
         } catch (err) {
-          console.error("Firestore Save Failed! Complete Firebase Error:", err);
+          console.error("Create Live Event: Exact Firestore Error details:", err);
           alert("Firebase Error: " + err.message);
           return;
         }
       } else {
+        console.log("Create Live Event: Firebase/Firestore not available, saving event locally.");
         eventsDatabase.unshift(newEvent);
         showNotificationToast("Event Saved Locally", `Saved locally (offline mode).`);
       }
